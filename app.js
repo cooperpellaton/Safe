@@ -207,7 +207,7 @@ app.post("/api/Rate", function(req, res) {
     var rate = req.body["rate"];
     console.log(req.body);
     var location = [lat, lng];
-    if (rate > 0) ratesModel.insert({
+    if (rate > 0) db.Rates.insert({
         location: location,
         rate: rate
     });
