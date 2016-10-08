@@ -20,7 +20,6 @@ var parseString = require('xml2js').parseString;
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
@@ -33,6 +32,7 @@ const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 var geoTools = require('geo-tools');
+var querystring = require('querystring');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -46,7 +46,7 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-var db = new Db('stops', new Server('localhost', 27017));
+var db = new Db('stops', new Server('50.116.48.206', 27017));
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/stops');
 mongoose.connection.on('connected', () => {
@@ -62,6 +62,17 @@ var stopSchema = new mongoose.Schema({
     stop_lon: String
 });
 var Stops = mongoose.model('Stops', stopSchema);
+var rateSchema = new mongoose.Schema({
+    location: [Number, Number],
+    rate: Number
+});
+var ratesModel = mongoose.model('Rates', rateSchema);
+
+var commentSchema = new mongoose.Schema({
+    location: [Number, Number],
+    comment: String
+});
+var commentsModel = mongoose.model('Comments', commentSchema);
 /**
  * Express configuration.
  */
@@ -118,22 +129,25 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-var promiseMongo = Promise.promisifyAll(Db);
-// var stopsPromise = new Promise(function(resolve, reject){
-//     db.open(function(err, db) {
-//         var collection = db.collection('stops');
-//         collection.find()
-//         resolve
-//     });   
-// }).then(function(collection){
-//     return (collection.find());
-// });
+var promise1 = new Promise(function(resolve, reject) {
+    db.open(function(err, db1) {
+        if (err) {
+            reject(err);
+        }
+        var stops = [];
+        db1.collection('stops').find().each(function(err, item) {
+            console.log(item);
+            if (item == null) {
+                resolve(stops);
+            } else {
+                stops.push(item);
+            }
+        });
+    });
+});
 var distSort = function calculateDistance(location) {
     var distanceList = [];
-    db.open(function(err, db) {
-        var collection = db.collection('stops');
-        collection.find()
-    }).then(function(contents) {
+    promise1.then(function(stops) {
         console.log(contents);
         for (stop in contents) {
             var object = [stop[1], stop[2]];
@@ -147,24 +161,9 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
+    }).catch(function(err) {
+        console.log(err);
     });
-    // Promise.props({
-    //     stops : stopsPromise
-    // }).then(function(result){
-    //     console.log(result.stops);
-    //     for (stop in stops) {
-    //         var object = [stop[1], stop[2]];
-    //         distanceList.push(stop[0], distance(object, location));
-    //     }
-    //     var sortedVals = function getSortedKeys(distanceList) {
-    //         var keys = [];
-    //         for (var key in obj) keys.push(key);
-    //         return keys.sort(function(a, b) {
-    //             return obj[a] - obj[b]
-    //         });
-    //     }
-    //     return sortedVals;
-    // });
 };
 /**
  * This function takes in as a POST the stop that the user is electing to go 
@@ -190,7 +189,7 @@ app.post("/api/nextBus", function(req, res) {
 app.get("/api/trafficData", function(req, res) {
     var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
     var xml = request(requestURL);
-    console.log("XML: " + xml);
+    console.log("XML: " + xml.body);
     var jsonTrafficData;
     parseString(xml, function(err, result) {
         jsonTrafficData = JSON.stringify(result);
@@ -202,9 +201,80 @@ app.get("/api/trafficData", function(req, res) {
     console.log(returnResponse);
     res.send(returnResponse);
 });
-/**
- * Error Handler.
- */
+app.post("/api/putRate", function(req, res) {
+    var lng = req.body["lng"];
+    var lat = req.body["lat"];
+    console.log("LAT" + req.body["lat"]);
+    var rate = req.body["rate"];
+    console.log(req.body);
+    var location = [lat, lng];
+    if (rate > 0) db.collection("Rates").insert({
+        location: location,
+        rate: rate
+    });
+    res.send("successful");
+});
+
+app.get("/api/getRate", function(req, res) {
+    var allRates = db.collection("Rates").find({});
+    var total = 0;
+    var count = 0;
+    console.log("All rates: " + allRates);
+    for (rate in allRates){
+        total += allRates["rate"];
+        count++;
+    }
+    var average = (total/count);
+    res.send({"average" : average});
+});
+
+app.get("/api/putComment", function(req, res) {
+    var lng = req.body["lng"];
+    var lat = req.body["lat"];
+    var comment = req.body["comment"];
+    console.log(req.body);
+    var location = [lat, lng];
+    if (comment.length > 5) db.collection("Comments").insert({
+        location: location,
+        comment: comment
+    });
+    res.send("successful");
+});
+
+app.get("/api/getComment", function(req, res) {
+    var comment = db.collection("Rates").findOne({});
+    console.log("Comment for return: " + comment);
+    res.send(comment);
+});
+
+var convertToXml = Promise.promisify(parseString);
+var extractInfo = function(data) {
+    console.log(data);
+    if (data.CCTraffic.location) {
+        return {
+            title: data.CCTraffic.location[0].title,
+            description: data.CCTraffic.location[0].description
+        };
+    } else {
+        return "no incidents";
+    }
+};
+var makeUrl = function(params) {
+    return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
+};
+app.get("/api/trafficData", function(req, res) {
+        Promise.props({
+            id: 17,
+            type: "incident",
+            max: 25,
+            bLat: "42.203097639603264,42.459441175790076",
+            bLng: "-83.25866010742186,-82.83293989257811",
+            sort: "severity_priority asc"
+        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send);
+    })
+    /**
+     * Error Handler.
+     */
 app.use(errorHandler());
 /**
  * Start Express server.
