@@ -191,7 +191,7 @@ app.get("/api/trafficData", function(req, res) {
     var xml = http.request(requestURL).end();
     var jsonTrafficData;
     parseString(xml, function(err, result) {
-        jsonTrafficData = json.stringify(result);
+        jsonTrafficData = JSON.stringify(result);
     });
     var returnResponse = [];
     returnResponse.push(jsonTrafficData["location"]);
