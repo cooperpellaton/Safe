@@ -147,7 +147,7 @@ var stopsPromise = new Promise(function(resolve, reject){
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     Promise.props({
-        stops : stopsPromise;
+        stops : stopsPromise
     }).then(function(result){
         console.log(result.stops);
         for (stop in stops) {
