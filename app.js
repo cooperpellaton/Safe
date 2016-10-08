@@ -66,12 +66,12 @@ var rateSchema = new mongoose.Schema({
     location: [Number, Number],
     rate: Number
 });
-var Rates = mongoose.model('Rates', rateSchema);
+var ratesModel = mongoose.model('Rates', rateSchema);
 var commentSchema = new mongoose.Schema({
     location: [Number, Number],
     comment: String
 });
-var Comments = mongoose.model('Comments', commentSchema);
+var commentsModel = mongoose.model('Comments', commentSchema);
 /**
  * Express configuration.
  */
@@ -207,7 +207,7 @@ app.post("/api/Rate", function(req, res) {
     var rate = req.body["rate"];
     console.log(req.body);
     var location = [lat, lng];
-    if (rate > 0) db.Rates.insert({
+    if (rate > 0) ratesModel.insert({
         location: location,
         rate: rate
     });
