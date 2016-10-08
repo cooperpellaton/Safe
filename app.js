@@ -135,23 +135,26 @@ app.post('/location/', function(req, res) {
     res.send(distSort(req.body));
 });
 
-var stopsPromise = new Promise(function(resolve, reject){
-    db.open(function(err, db) {
-        var collection = db.collection('stops');
-        collection.find()
-        resolve
-    });   
-}).then(function(collection){
-    return (collection.find());
-});
+var promiseMongo = Promise.promisifyAll(MongoDB);
+
+// var stopsPromise = new Promise(function(resolve, reject){
+//     db.open(function(err, db) {
+//         var collection = db.collection('stops');
+//         collection.find()
+//         resolve
+//     });   
+// }).then(function(collection){
+//     return (collection.find());
+// });
 
 var distSort = function calculateDistance(location) {
     var distanceList = [];
-    Promise.props({
-        stops : stopsPromise
-    }).then(function(result){
-        console.log(result.stops);
-        for (stop in stops) {
+    db.open(function(err, db) {
+        var collection = db.collection('stops');
+        collection.find()
+    }).then(function(contents){
+        console.log(contents);
+        for (stop in contents) {
             var object = [stop[1], stop[2]];
             distanceList.push(stop[0], distance(object, location));
         }
@@ -163,7 +166,25 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
-    });
+    });   
+
+    // Promise.props({
+    //     stops : stopsPromise
+    // }).then(function(result){
+    //     console.log(result.stops);
+    //     for (stop in stops) {
+    //         var object = [stop[1], stop[2]];
+    //         distanceList.push(stop[0], distance(object, location));
+    //     }
+    //     var sortedVals = function getSortedKeys(distanceList) {
+    //         var keys = [];
+    //         for (var key in obj) keys.push(key);
+    //         return keys.sort(function(a, b) {
+    //             return obj[a] - obj[b]
+    //         });
+    //     }
+    //     return sortedVals;
+    // });
 };
 /**
  * Error Handler.
