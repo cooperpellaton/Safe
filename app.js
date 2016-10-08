@@ -10,7 +10,7 @@
     GridStore = require('mongodb').GridStore,
     Grid = require('mongodb').Grid,
     Code = require('mongodb').Code,
-    BSON = require('mongodb').pure().BSON,
+    // BSON = require('mongodb').pure().BSON,
     assert = require('assert');
 const express = require('express');
 const compression = require('compression');
@@ -134,26 +134,33 @@ app.post('/location/', function(req, res) {
     res.send(distSort(req.body));
 });
 
-var distSort = function calculateDistance(location) {
-    var distanceList = [];
-    var stops = [];
+var stopsPromise = new Promise(function(resolve, reject){
     db.open(function(err, db) {
         var collection = db.collection('stops');
-        stops = collection.find();
-    });    
-    console.log(stops);
-    for (stop in stops) {
-        var object = [stop[1], stop[2]];
-        distanceList.push(stop[0], distance(object, location));
-    }
-    var sortedVals = function getSortedKeys(distanceList) {
-        var keys = [];
-        for (var key in obj) keys.push(key);
-        return keys.sort(function(a, b) {
-            return obj[a] - obj[b]
-        });
-    }
-    return sortedVals;
+        collection.find(resolve)
+    });   
+}).then(function(collection){
+    return (collection.find());
+});
+
+var distSort = function calculateDistance(location) {
+    var distanceList = [];
+    Promise.props({
+        var stops = stopsPromise;
+        console.log(stops);
+        for (stop in stops) {
+            var object = [stop[1], stop[2]];
+            distanceList.push(stop[0], distance(object, location));
+        }
+        var sortedVals = function getSortedKeys(distanceList) {
+            var keys = [];
+            for (var key in obj) keys.push(key);
+            return keys.sort(function(a, b) {
+                return obj[a] - obj[b]
+            });
+        }
+        return sortedVals;
+    });
 };
 /**
  * Error Handler.
