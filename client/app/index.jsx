@@ -1,25 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import classNames from 'classnames';
-import SearchBox from './components/search-box-component.jsx'
+import { Provider } from 'react-redux';
+import App from './components/root-component.jsx';
 import './styles/search.css';
+import {createInitialStore} from './store/create-store.js';
 
-class App extends React.Component {
-	
-  render () {
+let store = createInitialStore();
 
-	  let searchClass = classNames({
-	    'search__title': true,
-	  });
-
-    return (<div>
-    					<h1 className={searchClass} > Hello React! </h1>
-    					<SearchBox />
-    					<button className={'search__buttn'} onClick={() => {}}>Working</button>
-    				</div>
-    				)
-  }
-}
-
-render(<App/>, document.getElementById('root'));
+render(
+	<Provider store={store}>
+		<App/>
+  </Provider>
+	, document.getElementById('root'));
