@@ -20,7 +20,6 @@ var parseString = require('xml2js').parseString;
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
@@ -140,7 +139,8 @@ var promise1 = new Promise(function(resolve, reject) {
             console.log(item);
             if (item == null) {
                 resolve(stops);
-            } else {
+            }
+            else {
                 stops.push(item);
             }
         });
@@ -163,10 +163,12 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
-    }).catch(function(err) {
+    }).catch(function(err){
         console.log(err);
     });
 };
+
+
 /**
  * This function takes in as a POST the stop that the user is electing to go 
  * to. Using this information the Detroit DOT API is queried for the nearest 
@@ -223,6 +225,43 @@ app.post("/api/Comment", function(req, res){
         db.Comments.insert( { location: location, comment: comment } );
 });
 
+var convertToXml = Promise.promisify(parseString);
+
+var extractInfo = function(data) {
+    // console.log(data.CCTraffic.location[0]);
+    if (data.CCTraffic.location) {
+        return {
+            title: data.CCTraffic.location[0].title,
+            description: data.CCTraffic.location[0].description
+        };
+    } else {
+        return "no incidents";
+    }
+};
+
+var getIncidents = function(lat, lon) {
+    return new Promise(function(resolve, reject) {
+        var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat="
+            + encodeURIComponent(lat)
+            + "&bLng="
+            + encodeURIComponent(lon)
+            + "&sort=severity_priority%20asc";
+        request(requestURL, function (error, response, body) {
+            resolve(body);
+        });
+    });
+}
+
+
+app.get("/api/trafficData", function(req, res) {
+    getIncidents(
+        "42.203097639603264,42.459441175790076",
+        "-83.25866010742186,-82.83293989257811")
+        .then(convertToXml)
+        .then(extractInfo)
+        .then(res.send);
+}
+>>>>>>> 8fc55ba5f9a70e7ffe1d16e364f877056b1e8ed4
 /**
  * Error Handler.
  */
