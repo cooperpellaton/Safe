@@ -1,8 +1,8 @@
 /**
  * Module dependencies.
  */
- var Promise = require('bluebird');
- var Db = require('mongodb').Db,
+var Promise = require('bluebird');
+var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server,
     ReplSetServers = require('mongodb').ReplSetServers,
@@ -64,7 +64,6 @@ mongoose.connection.on('error', () => {
     console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
     process.exit();
 });
-
 var stopSchema = new mongoose.Schema({
     stop_name: String,
     stop_lat: String,
@@ -134,21 +133,19 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-
-var stopsPromise = new Promise(function(resolve, reject){
+var stopsPromise = new Promise(function(resolve, reject) {
     db.open(function(err, db) {
         var collection = db.collection('stops');
         collection.find(resolve)
-    });   
-}).then(function(collection){
+    });
+}).then(function(collection) {
     return (collection.find());
 });
-
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     Promise.props({
-        stops : stopsPromise;
-    }).then(function(result){
+        stops: stopsPromise
+    }).then(function(result) {
         console.log(result.stops);
         for (stop in stops) {
             var object = [stop[1], stop[2]];
