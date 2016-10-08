@@ -118,22 +118,25 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-var promiseMongo = Promise.promisifyAll(Db);
-// var stopsPromise = new Promise(function(resolve, reject){
-//     db.open(function(err, db) {
-//         var collection = db.collection('stops');
-//         collection.find()
-//         resolve
-//     });   
-// }).then(function(collection){
-//     return (collection.find());
-// });
+var promise1 = new Promise(function(resolve, reject) {
+    db.open(function(err, db1) {
+        if (err) {
+            reject(err);
+        }
+        var stops = [];
+        db1.collection('stops').find().each(function(err, item) {
+            console.log(item);
+            if (item == null) {
+                resolve(stops);
+            } else {
+                stops.push(item);
+            }
+        });
+    });
+});
 var distSort = function calculateDistance(location) {
     var distanceList = [];
-    db.open(function(err, db) {
-        var collection = db.collection('stops');
-        collection.find()
-    }).then(function(contents) {
+    promise1.then(function(stops) {
         console.log(contents);
         for (stop in contents) {
             var object = [stop[1], stop[2]];
@@ -147,24 +150,9 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
+    }).catch(function(err) {
+        console.log(err);
     });
-    // Promise.props({
-    //     stops : stopsPromise
-    // }).then(function(result){
-    //     console.log(result.stops);
-    //     for (stop in stops) {
-    //         var object = [stop[1], stop[2]];
-    //         distanceList.push(stop[0], distance(object, location));
-    //     }
-    //     var sortedVals = function getSortedKeys(distanceList) {
-    //         var keys = [];
-    //         for (var key in obj) keys.push(key);
-    //         return keys.sort(function(a, b) {
-    //             return obj[a] - obj[b]
-    //         });
-    //     }
-    //     return sortedVals;
-    // });
 };
 /**
  * This function takes in as a POST the stop that the user is electing to go 
@@ -190,7 +178,7 @@ app.post("/api/nextBus", function(req, res) {
 app.get("/api/trafficData", function(req, res) {
     var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
     var xml = request(requestURL);
-    console.log("XML: " + xml);
+    console.log("XML: " + xml.body);
     var jsonTrafficData;
     parseString(xml, function(err, result) {
         jsonTrafficData = JSON.stringify(result);
