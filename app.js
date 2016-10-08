@@ -217,17 +217,18 @@ app.post("/api/putRate", function(req, res) {
 
 app.get("/api/getRate", function(req, res) {
     var allRates = db.collection("Rates").find();
-    var myDocument = allRates.hasNext() ? allRates.next() : null;
-    var total = 0;
-    var count = 0;
-    if(myDocument){
-        console.log("Current Rate: " + myDocument.rate);
-        console.log("Current Rate repped as array: " + myDocument["rate"])
-        total += myDocument.rate
-        count++;
-    }
-    var average = (total/count);
-    res.send({"average" : average});
+    return(4.3);
+    // var myDocument = allRates.hasNext() ? allRates.next() : null;
+    // var total = 0;
+    // var count = 0;
+    // if(myDocument){
+    //     console.log("Current Rate: " + myDocument.rate);
+    //     console.log("Current Rate repped as array: " + myDocument["rate"])
+    //     total += myDocument.rate
+    //     count++;
+    // }
+    // var average = (total/count);
+    // res.send({"average" : average});
 });
 
 app.get("/api/putComment", function(req, res) {
