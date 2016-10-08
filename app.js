@@ -1,7 +1,21 @@
 /**
  * Module dependencies.
  */
+var Promise = require('bluebird');
+var Db = require('mongodb').Db,
+    MongoClient = require('mongodb').MongoClient,
+    Server = require('mongodb').Server,
+    ReplSetServers = require('mongodb').ReplSetServers,
+    ObjectID = require('mongodb').ObjectID,
+    Binary = require('mongodb').Binary,
+    GridStore = require('mongodb').GridStore,
+    Grid = require('mongodb').Grid,
+    Code = require('mongodb').Code,
+    // BSON = require('mongodb').pure().BSON,
+    assert = require('assert');
 const express = require('express');
+var http = require('http');
+var parseString = require('xml2js').parseString;
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -17,9 +31,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-// const sass = require('node-sass-middleware');
-// const multer = require('multer');
-// const upload = multer({ dest: path.join(__dirname, 'uploads') });
+var geoTools = require('geo-tools');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -27,21 +39,15 @@ dotenv.load({
     path: '.env'
 });
 /**
- * Controllers (route handlers).
- */
-// const homeController = require('./controllers/home');
-// const userController = require('./controllers/user');
-// const apiController = require('./controllers/api');
-// const contactController = require('./controllers/contact');
-/**
  * Create Express server.
  */
 const app = express();
 /**
  * Connect to MongoDB.
  */
+var db = new Db('stops', new Server('localhost', 27017));
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+mongoose.connect('mongodb://localhost/stops');
 mongoose.connection.on('connected', () => {
     console.log('%s MongoDB connection established!', chalk.green('✓'));
 });
@@ -49,19 +55,18 @@ mongoose.connection.on('error', () => {
     console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
     process.exit();
 });
+var stopSchema = new mongoose.Schema({
+    stop_name: String,
+    stop_lat: String,
+    stop_lon: String
+});
+var Stops = mongoose.model('Stops', stopSchema);
 /**
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000);
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
 app.use(compression());
-// app.use(sass({
-//   src: path.join(__dirname, 'public'),
-//   dest: path.join(__dirname, 'public')
-// }));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -95,14 +100,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: 31557600000
 }));
 /**
- * Primary app routes.
- */
-// app.get('/', homeController.index);
-/**
- * API examples routes.
- */
-// app.get('/api', apiController.getApi);
-/**
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/facebook', passport.authenticate('facebook', {
@@ -112,6 +109,97 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/login'
 }), (req, res) => {
     res.redirect(req.session.returnTo || '/');
+});
+/**
+ * Defining my primary routes here.
+ */
+app.post('/location/', function(req, res) {
+    console.log(req.body); //should be JSON
+    res.send(distSort(req.body));
+});
+var promiseMongo = Promise.promisifyAll(Db);
+// var stopsPromise = new Promise(function(resolve, reject){
+//     db.open(function(err, db) {
+//         var collection = db.collection('stops');
+//         collection.find()
+//         resolve
+//     });   
+// }).then(function(collection){
+//     return (collection.find());
+// });
+var distSort = function calculateDistance(location) {
+    var distanceList = [];
+    db.open(function(err, db) {
+        var collection = db.collection('stops');
+        collection.find()
+    }).then(function(contents) {
+        console.log(contents);
+        for (stop in contents) {
+            var object = [stop[1], stop[2]];
+            distanceList.push(stop[0], distance(object, location));
+        }
+        var sortedVals = function getSortedKeys(distanceList) {
+            var keys = [];
+            for (var key in obj) keys.push(key);
+            return keys.sort(function(a, b) {
+                return obj[a] - obj[b]
+            });
+        }
+        return sortedVals;
+    });
+    // Promise.props({
+    //     stops : stopsPromise
+    // }).then(function(result){
+    //     console.log(result.stops);
+    //     for (stop in stops) {
+    //         var object = [stop[1], stop[2]];
+    //         distanceList.push(stop[0], distance(object, location));
+    //     }
+    //     var sortedVals = function getSortedKeys(distanceList) {
+    //         var keys = [];
+    //         for (var key in obj) keys.push(key);
+    //         return keys.sort(function(a, b) {
+    //             return obj[a] - obj[b]
+    //         });
+    //     }
+    //     return sortedVals;
+    // });
+};
+/**
+ * This function takes in as a POST the stop that the user is electing to go 
+ * to. Using this information the Detroit DOT API is queried for the nearest 
+ * bus to that location and the time to arrival is returned. If no such bus is 
+ * found going to that stop, false is returned.
+ * A sample input: 
+ * { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
+ * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
+ */
+app.post("/api/nextBus", function(req, res) {
+    var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
+    var returnedJSON = http.request(requestURL, callback).end();
+    var englishStopName = req.body["stop_name"];
+    var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
+    for (bus in returnedJSON["data"]["list"]) {
+        if (bus["nextStop"].equals(stopID)) {
+            return stop["nextStopTimeOffset"];
+        }
+    }
+    return false;
+});
+app.get("/api/trafficData", function(req, res) {
+    var requestURL = "http://apple.com";
+    var xml = http.request(requestURL).end();
+    console.log("XML: " + xml);
+    var jsonTrafficData;
+    parseString(xml, function(err, result) {
+        jsonTrafficData = JSON.stringify(result);
+    });
+    var returnResponse = [];
+    returnResponse.push(jsonTrafficData["location"]);
+    returnResponse.push(jsonTrafficData["title"]);
+    returnResponse.push(jsonTrafficData["description"]);
+    console.log(returnResponse);
+    res.send(returnResponse);
 });
 /**
  * Error Handler.
