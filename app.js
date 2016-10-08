@@ -1,6 +1,17 @@
 /**
  * Module dependencies.
  */
+ var Db = require('mongodb').Db,
+    MongoClient = require('mongodb').MongoClient,
+    Server = require('mongodb').Server,
+    ReplSetServers = require('mongodb').ReplSetServers,
+    ObjectID = require('mongodb').ObjectID,
+    Binary = require('mongodb').Binary,
+    GridStore = require('mongodb').GridStore,
+    Grid = require('mongodb').Grid,
+    Code = require('mongodb').Code,
+    BSON = require('mongodb').pure().BSON,
+    assert = require('assert');
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -41,6 +52,7 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
+var db = new Db('stops', new Server('localhost', 27017));
 mongoose.Promise = global.Promise;
 // mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 mongoose.connect('mongodb://localhost/stops')
@@ -124,7 +136,11 @@ app.post('/location/', function(req, res) {
 
 var distSort = function calculateDistance(location) {
     var distanceList = [];
-    var stops = Stops.find();
+    var stops = [];
+    db.open(function(err, db) {
+        var collection = db.collection('stops');
+        stops = collection.find();
+    });    
     console.log(stops);
     for (stop in stops) {
         var object = [stop[1], stop[2]];
