@@ -32,6 +32,7 @@ const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 var geoTools = require('geo-tools');
+var querystring = require('querystring');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -71,7 +72,6 @@ var commentSchema = new mongoose.Schema({
     comment: String
 });
 var Comments = mongoose.model('Comments', commentSchema);
-
 /**
  * Express configuration.
  */
@@ -128,7 +128,6 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-
 var promise1 = new Promise(function(resolve, reject) {
     db.open(function(err, db1) {
         if (err) {
@@ -139,14 +138,12 @@ var promise1 = new Promise(function(resolve, reject) {
             console.log(item);
             if (item == null) {
                 resolve(stops);
-            }
-            else {
+            } else {
                 stops.push(item);
             }
         });
     });
 });
-
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     promise1.then(function(stops) {
@@ -163,12 +160,10 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
-    }).catch(function(err){
+    }).catch(function(err) {
         console.log(err);
     });
 };
-
-
 /**
  * This function takes in as a POST the stop that the user is electing to go 
  * to. Using this information the Detroit DOT API is queried for the nearest 
@@ -190,7 +185,6 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-
 app.get("/api/trafficData", function(req, res) {
     var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
     var xml = request(requestURL);
@@ -206,29 +200,29 @@ app.get("/api/trafficData", function(req, res) {
     console.log(returnResponse);
     res.send(returnResponse);
 });
-
-app.post("/api/Rate", function(req, res){
+app.post("/api/Rate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var rate = req.body["rate"];
     var location = [lat, lng];
-    if(rate > 0)
-        db.Rates.insert( { location: location, rate: rate } );
+    if (rate > 0) db.Rates.insert({
+        location: location,
+        rate: rate
+    });
 });
-
-app.post("/api/Comment", function(req, res){
+app.post("/api/Comment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var comment = req.body["comment"];
     var location = [lat, lng];
-    if(comment.length > 5)
-        db.Comments.insert( { location: location, comment: comment } );
+    if (comment.length > 5) db.Comments.insert({
+        location: location,
+        comment: comment
+    });
 });
-
 var convertToXml = Promise.promisify(parseString);
-
 var extractInfo = function(data) {
-    // console.log(data.CCTraffic.location[0]);
+    console.log(data);
     if (data.CCTraffic.location) {
         return {
             title: data.CCTraffic.location[0].title,
@@ -238,33 +232,22 @@ var extractInfo = function(data) {
         return "no incidents";
     }
 };
-
-var getIncidents = function(lat, lon) {
-    return new Promise(function(resolve, reject) {
-        var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat="
-            + encodeURIComponent(lat)
-            + "&bLng="
-            + encodeURIComponent(lon)
-            + "&sort=severity_priority%20asc";
-        request(requestURL, function (error, response, body) {
-            resolve(body);
-        });
-    });
-}
-
-
+var makeUrl = function(params) {
+    return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
+};
 app.get("/api/trafficData", function(req, res) {
-    getIncidents(
-        "42.203097639603264,42.459441175790076",
-        "-83.25866010742186,-82.83293989257811")
-        .then(convertToXml)
-        .then(extractInfo)
-        .then(res.send);
-}
->>>>>>> 8fc55ba5f9a70e7ffe1d16e364f877056b1e8ed4
-/**
- * Error Handler.
- */
+        Promise.props({
+            id: 17,
+            type: "incident",
+            max: 25,
+            bLat: "42.203097639603264,42.459441175790076",
+            bLng: "-83.25866010742186,-82.83293989257811",
+            sort: "severity_priority asc"
+        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send);
+    })
+    /**
+     * Error Handler.
+     */
 app.use(errorHandler());
 /**
  * Start Express server.
