@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+ var Promise = require('bluebird');
  var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server,
