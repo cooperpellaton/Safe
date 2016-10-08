@@ -110,7 +110,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 /**
  * Defining my primary routes here.
  */
-app.use(express.bodyParser());
 app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
