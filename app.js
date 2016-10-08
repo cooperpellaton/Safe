@@ -216,12 +216,13 @@ app.post("/api/putRate", function(req, res) {
 });
 
 app.get("/api/getRate", function(req, res) {
-    var allRates = db.collection("Rates").find({});
+    var allRates = db.collection("Rates").find();
+    var myDocument = allRates.hasNext() ? allRates.next() : null;
     var total = 0;
     var count = 0;
-    console.log("All rates: " + allRates);
-    for (rate in allRates){
-        total += allRates["rate"];
+    if(myDocument){
+        console.log("Current Rate: " + myDocument);
+        total += myDocument.rate
         count++;
     }
     var average = (total/count);
