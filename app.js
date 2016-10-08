@@ -67,6 +67,7 @@ var rateSchema = new mongoose.Schema({
     rate: Number
 });
 var ratesModel = mongoose.model('Rates', rateSchema);
+
 var commentSchema = new mongoose.Schema({
     location: [Number, Number],
     comment: String
@@ -207,7 +208,7 @@ app.post("/api/Rate", function(req, res) {
     var rate = req.body["rate"];
     console.log(req.body);
     var location = [lat, lng];
-    if (rate > 0) db.Rates.insert({
+    if (rate > 0) db.collection("Rates").insert({
         location: location,
         rate: rate
     });
