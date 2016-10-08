@@ -210,6 +210,7 @@ app.post("/api/Rate", function(req, res) {
         location: location,
         rate: rate
     });
+    res.send("successful");
 });
 app.post("/api/Comment", function(req, res) {
     var lng = req.body["lng"];
