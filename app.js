@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 var Promise = require('bluebird');
+var request = require('request');
 var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server,
@@ -176,7 +177,7 @@ var distSort = function calculateDistance(location) {
  */
 app.post("/api/nextBus", function(req, res) {
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
-    var returnedJSON = http.request(requestURL, callback).end();
+    var returnedJSON = request(requestURL, callback);
     var englishStopName = req.body["stop_name"];
     var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
     for (bus in returnedJSON["data"]["list"]) {
@@ -187,8 +188,8 @@ app.post("/api/nextBus", function(req, res) {
     return false;
 });
 app.get("/api/trafficData", function(req, res) {
-    var requestURL = "http://apple.com";
-    var xml = http.request(requestURL).end();
+    var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
+    var xml = http(requestURL);
     console.log("XML: " + xml);
     var jsonTrafficData;
     parseString(xml, function(err, result) {
