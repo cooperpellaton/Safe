@@ -218,7 +218,8 @@ app.post("/api/putRate", function(req, res) {
 app.get("/api/getRate", function(req, res) {
     var allRates = db.collection("Rates").find();
     var val = Math.floor(0 + Math.random() * 5);
-    return(val);
+    console.log(val);
+    res.send(val);
     // var myDocument = allRates.hasNext() ? allRates.next() : null;
     // var total = 0;
     // var count = 0;
