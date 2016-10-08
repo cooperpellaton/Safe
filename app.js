@@ -189,7 +189,7 @@ app.post("/api/nextBus", function(req, res) {
 app.get("/api/trafficData", function(req, res) {
     var requestURL = "http://apple.com";
     var xml = http.request(requestURL).end();
-    console.log(xml);
+    console.log("XML: " + xml);
     var jsonTrafficData;
     parseString(xml, function(err, result) {
         jsonTrafficData = JSON.stringify(result);
