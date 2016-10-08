@@ -110,7 +110,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 /**
  * Defining my primary routes here.
  */
-app.get('location/:location', function(req, res) {
+app.get('/location/:location', function(req, res) {
     res.send(req.distSort(location));
 });
 var distSort = function calculateDistance(location) {
