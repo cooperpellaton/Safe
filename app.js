@@ -29,10 +29,10 @@ dotenv.load({ path: '.env' });
 /**
  * Controllers (route handlers).
  */
-const homeController = require('./controllers/home');
-const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
-const contactController = require('./controllers/contact');
+// const homeController = require('./controllers/home');
+// const userController = require('./controllers/user');
+// const apiController = require('./controllers/api');
+// const contactController = require('./controllers/contact');
 
 
 /**
@@ -102,13 +102,13 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
+// app.get('/', homeController.index);
 
 
 /**
  * API examples routes.
  */
-app.get('/api', apiController.getApi);
+// app.get('/api', apiController.getApi);
 
 
 /**
