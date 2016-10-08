@@ -135,7 +135,7 @@ app.post('/location/', function(req, res) {
     res.send(distSort(req.body));
 });
 
-var promiseMongo = Promise.promisifyAll(MongoDB);
+var promiseMongo = Promise.promisifyAll(Db);
 
 // var stopsPromise = new Promise(function(resolve, reject){
 //     db.open(function(err, db) {
