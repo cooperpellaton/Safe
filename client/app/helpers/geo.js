@@ -5,13 +5,9 @@ var getCoordinatesAsync = function(options){
 	});
 }
 
-function postUserLocation(geo, src, destination){
-	return fetch('/ajax/location', {
+function postUserLocation([geo, src, destination]){
+	return fetch('/api/trafficData', {
   	method: 'POST',
-  	// headers: {
-   //  	'Accept': 'application/json',
-   //  	'Content-Type': 'application/json'
-  	// },
   	body: {
     	src: 'Hubot',
     	destination: 'hubot',
@@ -20,11 +16,20 @@ function postUserLocation(geo, src, destination){
 	});
 }
 
-export function trafficCall() {
+// var Promise = require('bluebird');
+// Promise.all([
+// 	resolveUserStringToRealLocation(fdsa),
+// 	resolveUserStringToRealLocation(gfds)
+// ]).then(function([fdsaLoc, gfdsLoc]){
+
+// })
+
+export function trafficCall(src, destination) {
 	var myGeo;
 	return getCoordinatesAsync()
 	.then(function(geo){
-		return myGeo = geo;
+		myGeo = geo;
+		return [geo, src, destination]
 	})
 	.then(postUserLocation)
 	.then(function(){

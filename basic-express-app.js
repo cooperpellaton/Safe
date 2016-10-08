@@ -8,7 +8,7 @@ app.get('/', function(req,res){
     res.sendFile(path.resolve('index.html'));
 });
 
-app.post('/ajax/location', function(req,res){
+app.post('/api/trafficData', function(req,res){
     console.log(req);
     res.status(200).send();
 });

@@ -18,20 +18,14 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return { actions: bindActionCreators(actionCreators, dispatch) }
+  return bindActionCreators(actionCreators, dispatch) 
 }
 
 class App extends React.Component {
 	
-  render () {
-	  let searchClass = classNames({
-	    'search__title': true,
-	  });
-
-    return (
-			<div>
-				<h1 className={searchClass}> Suggest Traffic Data! </h1>
-				<SearchBox 
+	renderTrafficData() {
+	  return (
+			<SearchBox 
 					trafficData={
 				    [
 							{
@@ -52,15 +46,45 @@ class App extends React.Component {
 						]
 					}
 				/>
+	  	)
+	}
+
+  render () {
+	  let searchClass = classNames({
+	    'search__title': true,
+	  });
+
+    return (
+			<div>
+				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				{this.renderTrafficData()}
 				<div className='search__box'>
 					<input placeholder='Src' type="text" />
 					<input placeholder='Destination' type="text" />
 					<button className={'search__button'} onClick={() => {
 						trafficCall()
-            .then(function(geo){
-              this.props.actions.setScreenData(2);
-            }); // TODO emit
+            .then((geo) => {
+              this.props.setScreenData(1);
+            }); 
 					}} > Find Traffic </button>
+					<button className={'search__button'} onClick={() => {
+						trafficCall()
+            .then((geo) => {
+              this.props.setScreenData(2);
+            }); 
+					}} > Bus Traffic </button>
+					<button className={'search__button'} onClick={() => {
+						trafficCall()
+            .then((geo) => {
+              this.props.setScreenData(3);
+            }); 
+					}} > Bike Traffic </button>
+					<button className={'search__button'} onClick={() => {
+						trafficCall()
+            .then((geo) => {
+              this.props.setScreenData(4);
+            }); 
+					}} > Uber App </button>
 				</div>
 			</div>
 		)
@@ -69,7 +93,11 @@ class App extends React.Component {
 
 App.propTypes = 
 {
-    Screen: React.PropTypes.number,
+    ScreenNumber: React.PropTypes.number,
+
+    // Actions
+    setScreenData: React.PropTypes.func,
+    setLocationData: React.PropTypes.func,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

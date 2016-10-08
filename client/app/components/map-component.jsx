@@ -10,7 +10,6 @@ class Map extends React.Component {
 
   	let mapClass = classNames({
 	    'search__map-active': true,
-      'search__map-active': false
 	  });
 
 	  // var stationComponents = this.props.stations.map(function(station) {

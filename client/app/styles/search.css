@@ -24,9 +24,9 @@ input[type=text] {
     -webkit-border-radius: 3px;
     -moz-border-radus: 3px;
     padding: 10px;
-    margin: 5px;
     outline: none;
-    display: block;
+    display: flex;
+    margin: 10px;
 }
 
 

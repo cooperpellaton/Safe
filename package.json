@@ -5,6 +5,7 @@
     "pack": "webpack -d --watch",
     "build": "webpack -p",
     "dev": "webpack -d --watch",
+    "test-serve": "nodemon basic-express-app.js",
     "dev-serve": "webpack-dev-server"
   },
   "dependencies": {
