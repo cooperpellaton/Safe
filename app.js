@@ -201,7 +201,7 @@ app.get("/api/trafficData", function(req, res) {
     console.log(returnResponse);
     res.send(returnResponse);
 });
-app.post("/api/Rate", function(req, res) {
+app.post("/api/putRate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     console.log("LAT" + req.body["lat"]);
@@ -214,7 +214,20 @@ app.post("/api/Rate", function(req, res) {
     });
     res.send("successful");
 });
-app.post("/api/Comment", function(req, res) {
+
+app.post("/api/getRate", function(req, res) {
+    var allRates = db.collection("Rates").find({});
+    var total = 0;
+    var count = 0;
+    for (rate in allRates){
+        total += allRates["rate"];
+        count++;
+    }
+    var average = (total/count);
+    res.send({"average" : average});
+});
+
+app.get("/api/putComment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var comment = req.body["comment"];
@@ -226,6 +239,12 @@ app.post("/api/Comment", function(req, res) {
     });
     res.send("successful");
 });
+
+app.get("/api/getComment", function(req, res) {
+    var comment = db.collection("Rates").findOne({});
+    res.send(comment);
+});
+
 var convertToXml = Promise.promisify(parseString);
 var extractInfo = function(data) {
     console.log(data);
