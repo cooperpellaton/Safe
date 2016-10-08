@@ -52,7 +52,7 @@ mongoose.connection.on('error', () => {
     process.exit();
 });
 
-var stopSchema = new mongoose.schema({
+var stopSchema = new mongoose.Schema({
     stop_name: String,
     stop_lat: String,
     stop_lon: String
