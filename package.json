@@ -3,8 +3,7 @@
     "start": "node app.js",
     "test": "mocha --reporter spec --timeout 5000",
     "dev": "webpack -d --watch",
-    "build": "webpack -p",
-    "dev-serve": "webpack-dev-server"
+    "dev-serve": "webpack-dev-server",
   },
   "dependencies": {
     "async": "^2.0.1",
