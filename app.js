@@ -186,21 +186,17 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-app.get("/api/trafficData", function(req, res) {
-    var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
-    var xml = request(requestURL);
-    console.log("XML: " + xml.body);
-    var jsonTrafficData;
-    parseString(xml, function(err, result) {
-        jsonTrafficData = JSON.stringify(result);
-    });
-    var returnResponse = [];
-    returnResponse.push(jsonTrafficData["location"]);
-    returnResponse.push(jsonTrafficData["title"]);
-    returnResponse.push(jsonTrafficData["description"]);
-    console.log(returnResponse);
-    res.send(returnResponse);
+
+/**
+* This route will order an uber for the user. It assumes that the location is 
+* posted to the route in the format {[LAT, LONG],[LAT, LONG]}.
+*/
+app.post("/api/orderUber", function(req, res){
+    uberBuildURL
+    urlPart1 = "uber://?client_id=cCpG5qtrxGxCzApGenztSMTYhqE_yirV&action=setPickup&pickup[latitude]=" + req.body[1]["lat"]+ "&pickup[longitude]=" + req.body[1]["long"] + "&pickup[nickname]=UberHQ&pickup[formatted_address]=1455%20Market%20St%2C%20San%20Francisco%2C%20CA%2094103"&dropoff[latitude]=" + req.body[2]["lat"] + "&dropoff[longitude]=" + req.body[2]["long"] + "&dropoff[nickname]=Coit%20Tower&dropoff[formatted_address]=1%20Telegraph%20Hill%20Blvd%2C%20San%20Francisco%2C%20CA%2094133&product_id=a1111c8c-c720-46c3-8534-2fcdd730040d&link_text=View%20team%20roster&partner_deeplink=partner%3A%2F%2Fteam%2F9383";
+
 });
+
 app.post("/api/putRate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
