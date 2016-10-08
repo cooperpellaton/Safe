@@ -219,6 +219,7 @@ app.post("/api/getRate", function(req, res) {
     var allRates = db.collection("Rates").find({});
     var total = 0;
     var count = 0;
+    console.log("All rates: " + allRates);
     for (rate in allRates){
         total += allRates["rate"];
         count++;
@@ -242,6 +243,7 @@ app.get("/api/putComment", function(req, res) {
 
 app.get("/api/getComment", function(req, res) {
     var comment = db.collection("Rates").findOne({});
+    console.log("Comment for return: " + comment);
     res.send(comment);
 });
 
