@@ -15,6 +15,7 @@ var Db = require('mongodb').Db,
     assert = require('assert');
 const express = require('express');
 var http = require('http');
+var parseString = require('xml2js').parseString;
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -170,11 +171,11 @@ var distSort = function calculateDistance(location) {
  * bus to that location and the time to arrival is returned. If no such bus is 
  * found going to that stop, false is returned.
  * A sample input: 
-* { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
-* Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
+ * { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
+ * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
  */
 app.post("/api/nextBus", function(req, res) {
-    var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP"
+    var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
     var returnedJSON = http.request(requestURL, callback).end();
     var englishStopName = req.body["stop_name"];
     var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
@@ -185,10 +186,23 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-
-    /**
-     * Error Handler.
-     */
+app.get("/api/trafficData", function(req, res) {
+    var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
+    var xml = http.request(requestURL, callback).end();
+    var jsonTrafficData;
+    parseString(xml, function(err, result) {
+        jsonTrafficData = json.stringify(result);
+    });
+    var returnResponse = [];
+    returnResponse.push(jsonTrafficData["location"]);
+    returnResponse.push(jsonTrafficData["title"]);
+    returnResponse.push(jsonTrafficData["description"]);
+    console.log(returnResponse);
+    res.send(returnResponse);
+});
+/**
+ * Error Handler.
+ */
 app.use(errorHandler());
 /**
  * Start Express server.
