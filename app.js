@@ -56,7 +56,7 @@ const app = express();
 var db = new Db('stops', new Server('localhost', 27017));
 mongoose.Promise = global.Promise;
 // mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-mongoose.connect('mongodb://localhost/stops')
+mongoose.connect('mongodb://localhost/stops');
 mongoose.connection.on('connected', () => {
     console.log('%s MongoDB connection established!', chalk.green('✓'));
 });
@@ -147,8 +147,9 @@ var stopsPromise = new Promise(function(resolve, reject){
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     Promise.props({
-        var stops = stopsPromise;
-        console.log(stops);
+        stops : stopsPromise;
+    }).then(function(result){
+        console.log(result.stops);
         for (stop in stops) {
             var object = [stop[1], stop[2]];
             distanceList.push(stop[0], distance(object, location));
