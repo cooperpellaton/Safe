@@ -125,46 +125,46 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 /**
  * Defining my primary routes here.
  */
-app.post('/location/', function(req, res) {
-    console.log(req.body); //should be JSON
-    res.send(distSort(req.body));
-});
-var promise1 = new Promise(function(resolve, reject) {
-    db.open(function(err, db1) {
-        if (err) {
-            reject(err);
-        }
-        var stops = [];
-        db1.collection('stops').find().each(function(err, item) {
-            console.log(item);
-            if (item == null) {
-                resolve(stops);
-            } else {
-                stops.push(item);
-            }
-        });
-    });
-});
-var distSort = function calculateDistance(location) {
-    var distanceList = [];
-    promise1.then(function(stops) {
-        console.log(contents);
-        for (stop in contents) {
-            var object = [stop[1], stop[2]];
-            distanceList.push(stop[0], distance(object, location));
-        }
-        var sortedVals = function getSortedKeys(distanceList) {
-            var keys = [];
-            for (var key in obj) keys.push(key);
-            return keys.sort(function(a, b) {
-                return obj[a] - obj[b]
-            });
-        }
-        return sortedVals;
-    }).catch(function(err) {
-        console.log(err);
-    });
-};
+// app.post('/location/', function(req, res) {
+//     console.log(req.body); //should be JSON
+//     res.send(distSort(req.body));
+// });
+// var promise1 = new Promise(function(resolve, reject) {
+//     db.open(function(err, db1) {
+//         if (err) {
+//             reject(err);
+//         }
+//         var stops = [];
+//         db1.collection('stops').find().each(function(err, item) {
+//             console.log(item);
+//             if (item == null) {
+//                 resolve(stops);
+//             } else {
+//                 stops.push(item);
+//             }
+//         });
+//     });
+// });
+// var distSort = function calculateDistance(location) {
+//     var distanceList = [];
+//     promise1.then(function(stops) {
+//         console.log(contents);
+//         for (stop in contents) {
+//             var object = [stop[1], stop[2]];
+//             distanceList.push(stop[0], distance(object, location));
+//         }
+//         var sortedVals = function getSortedKeys(distanceList) {
+//             var keys = [];
+//             for (var key in obj) keys.push(key);
+//             return keys.sort(function(a, b) {
+//                 return obj[a] - obj[b]
+//             });
+//         }
+//         return sortedVals;
+//     }).catch(function(err) {
+//         console.log(err);
+//     });
+// };
 /**
  * This function takes in as a POST the stop that the user is electing to go 
  * to. Using this information the Detroit DOT API is queried for the nearest 
@@ -221,7 +221,8 @@ app.get("/api/getRate", function(req, res) {
     var total = 0;
     var count = 0;
     if(myDocument){
-        console.log("Current Rate: " + myDocument);
+        console.log("Current Rate: " + myDocument.rate);
+        console.log("Current Rate repped as array: " + myDocument["rate"])
         total += myDocument.rate
         count++;
     }
