@@ -203,6 +203,7 @@ app.get("/api/trafficData", function(req, res) {
 app.post("/api/Rate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
+    console.log("LAT" + req.body["lat"]);
     var rate = req.body["rate"];
     console.log(req.body);
     var location = [lat, lng];
