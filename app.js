@@ -138,7 +138,8 @@ app.post('/location/', function(req, res) {
 var stopsPromise = new Promise(function(resolve, reject){
     db.open(function(err, db) {
         var collection = db.collection('stops');
-        collection.find(resolve)
+        collection.find()
+        resolve
     });   
 }).then(function(collection){
     return (collection.find());
