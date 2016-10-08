@@ -62,6 +62,17 @@ var stopSchema = new mongoose.Schema({
     stop_lon: String
 });
 var Stops = mongoose.model('Stops', stopSchema);
+var rateSchema = new mongoose.Schema({
+    location: [Double],
+    rate: Integer
+});
+var Rates = mongoose.model('Rates', rateSchema);
+var commentSchema = new mongoose.Schema({
+    location: [Double],
+    comment: String
+});
+var Comments = mongoose.model('Comments', commentSchema);
+
 /**
  * Express configuration.
  */
@@ -118,6 +129,7 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
+
 var promise1 = new Promise(function(resolve, reject) {
     db.open(function(err, db1) {
         if (err) {
@@ -134,6 +146,7 @@ var promise1 = new Promise(function(resolve, reject) {
         });
     });
 });
+
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     promise1.then(function(stops) {
@@ -175,6 +188,7 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
+
 app.get("/api/trafficData", function(req, res) {
     var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
     var xml = request(requestURL);
@@ -190,6 +204,25 @@ app.get("/api/trafficData", function(req, res) {
     console.log(returnResponse);
     res.send(returnResponse);
 });
+
+app.post("/api/Rate", function(req, res){
+    var lng = req.body["lng"];
+    var lat = req.body["lat"];
+    var rate = req.body["rate"];
+    var location = [lat, lng];
+    if(rate > 0)
+        db.Rates.insert( { location: location, rate: rate } );
+});
+
+app.post("/api/Comment", function(req, res){
+    var lng = req.body["lng"];
+    var lat = req.body["lat"];
+    var comment = req.body["comment"];
+    var location = [lat, lng];
+    if(comment.length > 5)
+        db.Comments.insert( { location: location, comment: comment } );
+});
+
 /**
  * Error Handler.
  */
