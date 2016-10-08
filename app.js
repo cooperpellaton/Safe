@@ -46,7 +46,7 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-var db = new Db('stops', new Server('localhost', 27017));
+var db = new Db('stops', new Server('0.0.0.0', 27017));
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/stops');
 mongoose.connection.on('connected', () => {
