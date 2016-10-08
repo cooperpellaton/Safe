@@ -123,8 +123,9 @@ app.post('/location/', function(req, res) {
 });
 
 var distSort = function calculateDistance(location) {
-    var distanceList = {};
+    var distanceList = [];
     var stops = Stops.find();
+    console.log(stops);
     for (stop in stops) {
         var object = [stop[1], stop[2]];
         distanceList.push(stop[0], distance(object, location));
