@@ -1,8 +1,8 @@
 /**
  * Module dependencies.
  */
- var Promise = require('bluebird');
- var Db = require('mongodb').Db,
+var Promise = require('bluebird');
+var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server,
     ReplSetServers = require('mongodb').ReplSetServers,
@@ -14,6 +14,7 @@
     // BSON = require('mongodb').pure().BSON,
     assert = require('assert');
 const express = require('express');
+var http = require('http');
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -36,7 +37,6 @@ var geoTools = require('geo-tools');
 dotenv.load({
     path: '.env'
 });
-
 /**
  * Create Express server.
  */
@@ -54,7 +54,6 @@ mongoose.connection.on('error', () => {
     console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
     process.exit();
 });
-
 var stopSchema = new mongoose.Schema({
     stop_name: String,
     stop_lat: String,
@@ -117,9 +116,7 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-
 var promiseMongo = Promise.promisifyAll(Db);
-
 // var stopsPromise = new Promise(function(resolve, reject){
 //     db.open(function(err, db) {
 //         var collection = db.collection('stops');
@@ -129,13 +126,12 @@ var promiseMongo = Promise.promisifyAll(Db);
 // }).then(function(collection){
 //     return (collection.find());
 // });
-
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     db.open(function(err, db) {
         var collection = db.collection('stops');
         collection.find()
-    }).then(function(contents){
+    }).then(function(contents) {
         console.log(contents);
         for (stop in contents) {
             var object = [stop[1], stop[2]];
@@ -149,8 +145,7 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
-    });   
-
+    });
     // Promise.props({
     //     stops : stopsPromise
     // }).then(function(result){
@@ -170,8 +165,30 @@ var distSort = function calculateDistance(location) {
     // });
 };
 /**
- * Error Handler.
+ * This function takes in as a POST the stop that the user is electing to go 
+ * to. Using this information the Detroit DOT API is queried for the nearest 
+ * bus to that location and the time to arrival is returned. If no such bus is 
+ * found going to that stop, false is returned.
+ * A sample input: 
+* { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
+* Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
  */
+app.post("/api/nextBus", function(req, res) {
+    var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP"
+    var returnedJSON = http.request(requestURL, callback).end();
+    var englishStopName = req.body["stop_name"];
+    var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
+    for (bus in returnedJSON["data"]["list"]) {
+        if (bus["nextStop"].equals(stopID)) {
+            return stop["nextStopTimeOffset"];
+        }
+    }
+    return false;
+});
+
+    /**
+     * Error Handler.
+     */
 app.use(errorHandler());
 /**
  * Start Express server.
