@@ -220,10 +220,11 @@ app.post("/api/Comment", function(req, res) {
     var comment = req.body["comment"];
     console.log(req.body);
     var location = [lat, lng];
-    if (comment.length > 5) db.Comments.insert({
+    if (comment.length > 5) db.collection("Comments").insert({
         location: location,
         comment: comment
     });
+    res.send("successful");
 });
 var convertToXml = Promise.promisify(parseString);
 var extractInfo = function(data) {
