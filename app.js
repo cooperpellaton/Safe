@@ -20,7 +20,6 @@ var parseString = require('xml2js').parseString;
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const lusca = require('lusca');
@@ -118,6 +117,7 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
+
 var promise1 = new Promise(function(resolve, reject) {
     db.open(function(err, db1) {
         if (err) {
@@ -128,12 +128,14 @@ var promise1 = new Promise(function(resolve, reject) {
             console.log(item);
             if (item == null) {
                 resolve(stops);
-            } else {
+            }
+            else {
                 stops.push(item);
             }
         });
     });
 });
+
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     promise1.then(function(stops) {
@@ -150,10 +152,12 @@ var distSort = function calculateDistance(location) {
             });
         }
         return sortedVals;
-    }).catch(function(err) {
+    }).catch(function(err){
         console.log(err);
     });
 };
+
+
 /**
  * This function takes in as a POST the stop that the user is electing to go 
  * to. Using this information the Detroit DOT API is queried for the nearest 
@@ -175,21 +179,43 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-app.get("/api/trafficData", function(req, res) {
-    var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
-    var xml = request(requestURL);
-    console.log("XML: " + xml.body);
-    var jsonTrafficData;
-    parseString(xml, function(err, result) {
-        jsonTrafficData = JSON.stringify(result);
+
+var convertToXml = Promise.promisify(parseString);
+
+var extractInfo = function(data) {
+    // console.log(data.CCTraffic.location[0]);
+    if (data.CCTraffic.location) {
+        return {
+            title: data.CCTraffic.location[0].title,
+            description: data.CCTraffic.location[0].description
+        };
+    } else {
+        return "no incidents";
+    }
+};
+
+var getIncidents = function(lat, lon) {
+    return new Promise(function(resolve, reject) {
+        var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat="
+            + encodeURIComponent(lat)
+            + "&bLng="
+            + encodeURIComponent(lon)
+            + "&sort=severity_priority%20asc";
+        request(requestURL, function (error, response, body) {
+            resolve(body);
+        });
     });
-    var returnResponse = [];
-    returnResponse.push(jsonTrafficData["location"]);
-    returnResponse.push(jsonTrafficData["title"]);
-    returnResponse.push(jsonTrafficData["description"]);
-    console.log(returnResponse);
-    res.send(returnResponse);
-});
+}
+
+
+app.get("/api/trafficData", function(req, res) {
+    getIncidents(
+        "42.203097639603264,42.459441175790076",
+        "-83.25866010742186,-82.83293989257811")
+        .then(convertToXml)
+        .then(extractInfo)
+        .then(res.send);
+}
 /**
  * Error Handler.
  */
