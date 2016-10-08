@@ -1,8 +1,8 @@
 /**
  * Module dependencies.
  */
- var Promise = require('bluebird');
- var Db = require('mongodb').Db,
+var Promise = require('bluebird');
+var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server,
     ReplSetServers = require('mongodb').ReplSetServers,
@@ -64,7 +64,6 @@ mongoose.connection.on('error', () => {
     console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
     process.exit();
 });
-
 var stopSchema = new mongoose.Schema({
     stop_name: String,
     stop_lat: String,
@@ -134,9 +133,7 @@ app.post('/location/', function(req, res) {
     console.log(req.body); //should be JSON
     res.send(distSort(req.body));
 });
-
 var promiseMongo = Promise.promisifyAll(Db);
-
 // var stopsPromise = new Promise(function(resolve, reject){
 //     db.open(function(err, db) {
 //         var collection = db.collection('stops');
@@ -146,28 +143,26 @@ var promiseMongo = Promise.promisifyAll(Db);
 // }).then(function(collection){
 //     return (collection.find());
 // });
-
 var distSort = function calculateDistance(location) {
     var distanceList = [];
     db.open(function(err, db) {
         var collection = db.collection('stops');
-        collection.find()
-    }).then(function(contents){
-        console.log(contents);
-        for (stop in contents) {
-            var object = [stop[1], stop[2]];
-            distanceList.push(stop[0], distance(object, location));
-        }
-        var sortedVals = function getSortedKeys(distanceList) {
-            var keys = [];
-            for (var key in obj) keys.push(key);
-            return keys.sort(function(a, b) {
-                return obj[a] - obj[b]
-            });
-        }
-        return sortedVals;
-    });   
-
+        collection.find().then(function(contents) {
+            console.log(contents);
+            for (stop in contents) {
+                var object = [stop[1], stop[2]];
+                distanceList.push(stop[0], distance(object, location));
+            }
+            var sortedVals = function getSortedKeys(distanceList) {
+                var keys = [];
+                for (var key in obj) keys.push(key);
+                return keys.sort(function(a, b) {
+                    return obj[a] - obj[b]
+                });
+            }
+            return sortedVals;
+        })
+    });
     // Promise.props({
     //     stops : stopsPromise
     // }).then(function(result){
