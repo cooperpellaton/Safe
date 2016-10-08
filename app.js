@@ -215,7 +215,7 @@ app.post("/api/putRate", function(req, res) {
     res.send("successful");
 });
 
-app.post("/api/getRate", function(req, res) {
+app.get("/api/getRate", function(req, res) {
     var allRates = db.collection("Rates").find({});
     var total = 0;
     var count = 0;
