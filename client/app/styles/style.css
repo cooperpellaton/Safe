@@ -13,6 +13,12 @@ body{
   outline:none;
 }
 
+h4, h3, p{
+  margin:0px;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
 .header{
   position:relative;
   padding-left: 20px;
@@ -86,4 +92,68 @@ body{
   width:40%;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.map-header{
+  position:relative;
+  top:0px;
+  width:100%;
+  height:40%;
+}
+
+.risk, .safety, .real-time .info{
+  position:relative;
+  width:90%;
+  margin:auto;
+}
+
+.progress-risk{
+  position:relative;
+  width:100%;
+  background-color: #e3e3e3;
+}
+
+.progress-risk .rp{
+  position:relative;
+  background-color: orange;
+  width:40%;
+}
+
+.danger-risk{
+  position:relative;
+  width:100%;
+  background-color: #e3e3e3;
+}
+
+.danger-risk .dp{
+  position:relative;
+  background-color: green;
+  width:10%;
+}
+
+.real-time{
+  background-color: #fff;
+  padding-top: 10px;
+}
+
+.real-time .info{
+  margin-bottom: 20px;
+}
+
+.info-bus{
+  position:relative;
+  width:90%;
+  margin:auto;
+}
+
+.info-bus table td{
+  font-size:15pt;
+  font-weight: bold;
+}
+
+.add-comment{
+  position:relative;
+  width:90%;
+  margin:auto;
+  margin-bottom:20px;
 }
