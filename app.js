@@ -204,6 +204,7 @@ app.post("/api/Rate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var rate = req.body["rate"];
+    console.log(req.body);
     var location = [lat, lng];
     if (rate > 0) db.Rates.insert({
         location: location,
@@ -214,6 +215,7 @@ app.post("/api/Comment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var comment = req.body["comment"];
+    console.log(req.body);
     var location = [lat, lng];
     if (comment.length > 5) db.Comments.insert({
         location: location,
