@@ -8,5 +8,9 @@ import logger from 'redux-logger'
 // );
 
 export function createInitialStore(initialState) {
-	return createStore(rootReducer, initialState, applyMiddleware(thunk, logger));
+	return createStore(rootReducer, initialState, applyMiddleware(thunk, logger({
+		collapsed() {
+			return true;
+		}
+	})));
 }
