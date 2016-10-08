@@ -51,6 +51,13 @@ mongoose.connection.on('error', () => {
     console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
     process.exit();
 });
+
+var stopSchema = new mongoose.schema({
+    stop_name: String,
+    stop_lat: String,
+    stop_lon: String
+});
+var Stops = mongoose.model('Stops', stopSchema);
 /**
  * Express configuration.
  */
@@ -117,7 +124,7 @@ app.post('/location/', function(req, res) {
 
 var distSort = function calculateDistance(location) {
     var distanceList = {};
-    var stops = mongoose.find();
+    var stops = Stops.find();
     for (stop in stops) {
         var object = [stop[1], stop[2]];
         distanceList.push(stop[0], distance(object, location));
