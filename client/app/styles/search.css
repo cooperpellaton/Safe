@@ -1,14 +1,22 @@
 .search__title {
+	font-family: Raleway;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.4px;
 	text-align: center;
-	font-size: 20px;
 }
 
 .search__box {
 	color: #42f49b;
+	
 }
 
 .search__button {
+	font-family: Raleway; 
 	border: none;
 	height: 30px;
 	background-color: #42d7f4;
+
 }

@@ -23954,7 +23954,7 @@
 	
 	
 	// module
-	exports.push([module.id, "search__title {\n\ttext-align: center;\n\tfont-size: 20px;\n}\n\nsearch__box {\n\tcolor: #42f49b;\n}\n\nsearch__button{\n\tborder: none;\n\theight: 30px;\n\tbackground-color: 42d7f4;\n}", ""]);
+	exports.push([module.id, ".search__title {\n\tfont-family: Raleway;\n\tfont-size: 24px;\n\tfont-style: normal;\n\tfont-variant: normal;\n\tfont-weight: 500;\n\tline-height: 26.4px;\n\ttext-align: center;\n}\n\n.search__box {\n\tcolor: #42f49b;\n\t\n}\n\n.search__button {\n\tfont-family: Raleway; \n\tborder: none;\n\theight: 30px;\n\tbackground-color: #42d7f4;\n\n}", ""]);
 	
 	// exports
 
