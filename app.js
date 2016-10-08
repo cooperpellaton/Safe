@@ -63,12 +63,12 @@ var stopSchema = new mongoose.Schema({
 });
 var Stops = mongoose.model('Stops', stopSchema);
 var rateSchema = new mongoose.Schema({
-    location: [Double],
-    rate: Integer
+    location: [{lat: Number, long: Number}],
+    rate: Number
 });
 var Rates = mongoose.model('Rates', rateSchema);
 var commentSchema = new mongoose.Schema({
-    location: [Double],
+    location: [{lat: Number, long: Number}],
     comment: String
 });
 var Comments = mongoose.model('Comments', commentSchema);
