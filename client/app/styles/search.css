@@ -1,14 +1,14 @@
-search__title {
+.search__title {
 	text-align: center;
 	font-size: 20px;
 }
 
-search__box {
+.search__box {
 	color: #42f49b;
 }
 
-search__button{
+.search__button {
 	border: none;
 	height: 30px;
-	background-color: 42d7f4;
+	background-color: #42d7f4;
 }
