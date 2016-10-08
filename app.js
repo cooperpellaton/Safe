@@ -17,6 +17,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
+var geoTools = require('geo-tools');
 // const sass = require('node-sass-middleware');
 // const multer = require('multer');
 // const upload = multer({ dest: path.join(__dirname, 'uploads') });
@@ -41,7 +42,8 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+// mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+mongoose.connect('mongodb://localhost/stops')
 mongoose.connection.on('connected', () => {
     console.log('%s MongoDB connection established!', chalk.green('✓'));
 });
@@ -95,14 +97,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: 31557600000
 }));
 /**
- * Primary app routes.
- */
-// app.get('/', homeController.index);
-/**
- * API examples routes.
- */
-// app.get('/api', apiController.getApi);
-/**
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/facebook', passport.authenticate('facebook', {
@@ -113,6 +107,28 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }), (req, res) => {
     res.redirect(req.session.returnTo || '/');
 });
+/**
+ * Defining my primary routes here.
+ */
+app.get('location/:location', function(req, res) {
+    res.send(req.distSort(location));
+});
+var distSort = function calculateDistance(location) {
+    var distanceList = {};
+    var stops = mongoose.find();
+    for (stop in stops) {
+        var object = [stop[1], stop[2]];
+        distanceList.push(stop[0], distance(object, location));
+    }
+    var sortedVals = function getSortedKeys(distanceList) {
+        var keys = [];
+        for (var key in obj) keys.push(key);
+        return keys.sort(function(a, b) {
+            return obj[a] - obj[b]
+        });
+    }
+    return sortedVals;
+};
 /**
  * Error Handler.
  */
