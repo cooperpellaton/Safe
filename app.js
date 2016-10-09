@@ -173,6 +173,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  *
  */
 app.post("/api/doSomeML", function(req, res) {
+        console.log(req.body);
         var d = new Date();
         var hour = d.getHours();
         child = exec('python python/ml_risk.py ' + hour + ' ' + req.body['visibility'], function(error, stdout, stderr) {
@@ -182,7 +183,14 @@ app.post("/api/doSomeML", function(req, res) {
                 console.log('exec error: ' + error);
             }
         });
-        res.send('python/risk.dat');
+        child = exec('python python/ml_danger.py ' + req.body['neighborhood'] + ' ' + hour, function(error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+        });
+        res.send('risk.dat' + 'danger.dat');
     })
     /**
      * This function takes in as a POST the stop that the user is electing to go 
@@ -193,17 +201,47 @@ app.post("/api/doSomeML", function(req, res) {
      * { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
      * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
      */
-app.post("/api/nextBus", function(req, res) {
+
+var checkBuses = function(data){
+        bus_element = data["routes"]["legs"]["steps"];
+        bus_found = false;
+        for(var i = 0; i < bus_element.length; i++){
+            e = bus_element[i];
+            if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
+                bus_element = e;
+                return true;
+        }
+    }
+}
+
+var getTime = function(data){
+    /** Remaining time **/
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
     var returnedJSON = request(requestURL, callback);
-    var englishStopName = req.body["stop_name"];
+    var englishStopName = data;
     var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
     for (bus in returnedJSON["data"]["list"]) {
         if (bus["nextStop"].equals(stopID)) {
             return stop["nextStopTimeOffset"];
         }
-    }
-    return false;
+    }    
+}
+
+app.post("/api/nextBus", function(req, res) {
+    /*
+    * req.body = [[lat, long], [lat, long]]
+    */
+    var coordinates = Promise.props({
+        origin: "" + req.body[0][0] + "," + req.body[0][1],
+        destiniation: "" + req.body[1][0] + "," + req.body[1][1]
+    }).then((params) => `https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=${params.origin}destination=${params.destination}&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0`).then(rp).then(JSON.parse).then(checkBuses);
+    var busTime = Promise.props({
+        englishStopName: req.body["stop_name"]
+    }).then(getTime);
+    Promise.props({
+        coordinates: coordinates,
+        busTime: busTime
+    }).then(res.send.bind(res));
 });
 /**
  * This route will order an uber for the user. It assumes that the location is 
@@ -280,17 +318,18 @@ var makeUrl = function(params) {
     return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
 };
 app.post("/api/trafficData", function(req, res) {
+    console.log(req.body);
     var traffic = Promise.props({
         id: 17,
-        type: "incident",
+        type: "incident,event",
         max: 25,
         bLat: "42.203097639603264,42.459441175790076",
         bLng: "-83.25866010742186,-82.83293989257811",
         sort: "severity_priority asc"
     }).then((params) => `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`).then(rp).then(convertToXml);
     var visibility = Promise.props({
-        latitude: "42.203097639603264",
-        longitude: "-83.25866010742186"
+        latitude: req.body["from"][0],
+        longitude: req.body["from"][1]
     }).then((params) => `https://api.darksky.net/forecast/dc0b864eaf08e3073401662ab0a3b463/${params.latitude},${params.longitude}`).then(rp).then(JSON.parse)
     Promise.props({
         traffic: traffic,
