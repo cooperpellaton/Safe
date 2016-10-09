@@ -138,8 +138,9 @@ app.post("/api/doSomeML", function(req, res) {
         });
         var content1 = fs.readFileSync('risk.dat');
         var content2 = fs.readFileSync('danger.dat');
+        var jsonResp = {"risk": content1, "danger": content2};
         res.setHeader('content-type', 'text/javascript');
-        res.send(JSON.parse(content1 + " " + content2));
+        res.send(JSON.stringify(jsonResp));
     })
     /**
      * This function takes in as a POST the stop that the user is electing to go 

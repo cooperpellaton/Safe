@@ -39,7 +39,9 @@ If the type is `POST` you are expected to provide `x-www-form-urlencoded` data i
 **POST**
 
 - /api/doSomeML
-	- This is the method that actually runs the ML models. It expects for you to provide the following.
+	- This is the method that actually runs the ML models. A sample of what tt expects for you to provide the following in the `POST` body is shown:
+	`{visibility: 3.9793469387755103, lat: 42.3422975, long: -83.0591982}`
+	
 - 
 
 **GET**
