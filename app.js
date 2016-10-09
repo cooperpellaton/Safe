@@ -136,7 +136,11 @@ app.post("/api/doSomeML", function(req, res) {
                 console.log('exec error: ' + error);
             }
         });
-        res.send('risk.dat' + 'danger.dat');
+        var content1 = fs.readFileSync('risk.dat');
+        var content2 = fs.readFileSync('danger.dat');
+        res.setHeader('content-type', 'text/javascript');
+        res.send(content1 + " " + content2);
+        
     })
     /**
      * This function takes in as a POST the stop that the user is electing to go 
