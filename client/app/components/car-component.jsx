@@ -29,12 +29,14 @@ class CarScreen extends React.Component {
       'marginBottom': '10px'
     }
 
+    console.log("Danger ", this.props.carData.danger, "Progress ", this.props.carData.progress);
+
     const progressStyle ={
-      width: ((10.0/50.0) * 100) + "%"
+      width: (Math.floor(Math.random() * 65) + 35) + "%"
     }
 
     const dangerStyle ={
-      width: ((30.0/50.0) * 100) + "%"
+      width: (Math.floor(Math.random() * 65) + 35) + "%"
     }
 
   	let carClass = classNames({
@@ -44,7 +46,7 @@ class CarScreen extends React.Component {
     return (
     <div>
       <div className="map-header">
-      <img src="client/app/images/maps-att.png" style={carStyle1}></img>
+      <img src="/client/app/images/maps-att.png" style={carStyle1}></img>
       </div>
 
       <div className="infos-ml" style={carStyle2}>
@@ -67,7 +69,7 @@ class CarScreen extends React.Component {
       </div>
       <div className="real-time">
         <div className="info">
-          <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
+          <h4>{this.props.carData.danger}</h4>
           <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
         </div>
         <div className="info">

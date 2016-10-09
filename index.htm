@@ -68,7 +68,7 @@
 			<div class="clear"></div>
 		</div>
 		<div class="row-butt">
-			<button class="main-butt"  style="background-color:#000;">
+			<button class="main-butt"  style="background-color:#000;" onClick={} >
 				<img src="client/app/images/uber.png" alt="A sample SVG button." style="padding-top:3px;padding-bottom:2px;"/>
 			</button>
 			<button class="main-butt" style="background-color:#b51111;">
@@ -83,6 +83,7 @@
 			<div class="clear"></div>
 		</div>
 	</div>
+
 
 	<script>
 		// This example displays an address form, using the autocomplete feature
@@ -127,6 +128,15 @@
 		      autocomplete1.setBounds(circle.getBounds());
 		    });
 		  }
+		}
+
+		function makeRequest(from, to) {
+			fetch('https://davidwalsh.name/users.json', {
+				method: 'POST', 
+				body: {
+
+				}
+			}).then(function() { /* handle response */ });
 		}
 		// [END region_geolocation]
     </script>

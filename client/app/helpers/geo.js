@@ -24,18 +24,23 @@ export function getTrafficCall() {
 	return getUserTrafficData()
 	.then(function(){
 		console.log(arguments);
-		return arguments;
+		return postTrafficData(arguments[0].body);
 	});
 }
 
-function postUserTrafficData([geo, src, destination]){
-	return fetch('/api/nextBus', {
+export function getTestTrafficCall() {
+	var myGeo;
+	return getUserTrafficData()
+	.then(function() {
+		console.log(arguments);
+		return arguments[0].body;
+	});
+}
+
+export function postTrafficData(resp){
+	return fetch('/api/doSomeML', {
   	method: 'POST',
-  	body: {
-    	src: '',
-    	destination: 'hubot',
-    	location: '',
-  	}
+  	body: resp
 	});
 }
 
@@ -46,8 +51,20 @@ export function busCall(src, destination) {
 		myGeo = [geo.coords.latitude, geo.coords.longitude];
 		return [geo, src, destination]
 	})
-	.then(postUserTrafficData)
+	.then(postUserGeoData)
 	.then(function(){
 		return myGeo;
+	});
+}
+
+// http://50.116.48.206:3000
+function postUserGeoData([geo, src, destination]){
+	return fetch('/api/nextBus', {
+  	method: 'POST',
+  	body: {
+    	geo: geo,
+    	src: src,
+    	destination: destination,
+  	}
 	});
 }

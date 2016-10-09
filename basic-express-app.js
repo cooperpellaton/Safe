@@ -1,8 +1,5 @@
 const path = require('path');
 const express = require('express');
-var parseString = require('xml2js').parseString;
-var Promise = require('bluebird');
-
 var app = express();
 
 app.use('/client/compiled', express.static(path.resolve('client/compiled')));
@@ -25,22 +22,6 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-
-var convertToXml = Promise.promisify(parseString);
-var extractInfo = function(data) {
-    console.log(data);
-    if (data.CCTraffic.location) {
-        return {
-            title: data.CCTraffic.location[0].title,
-            description: data.CCTraffic.location[0].description
-        };
-    } else {
-        return "no incidents";
-    }
-};
-var makeUrl = function(params) {
-    return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
-};
 
 app.get("/api/trafficData", function(req, res) {
         Promise.props({

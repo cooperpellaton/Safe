@@ -32,7 +32,8 @@ class SearchBox extends React.Component {
 	      </div>
     	{
     		this.props.trafficData.map( (data, index) => {
-      		return (<SearchResult
+      		return (
+          <SearchResult
       			key={index}
       			location={data.location}
       			title={data.title}

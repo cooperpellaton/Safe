@@ -5,7 +5,7 @@ import CarScreen from '../components/car-component.jsx'
 import BusScreen from '../components/bus-component.jsx'
 import Geo from '../helpers/geo';
 import {testFunction} from '../helpers/testHelper';
-import {busCall, getTrafficCall} from '../helpers/geo';
+import {busCall, getTrafficCall, getTestTrafficCall } from '../helpers/geo';
 import * as actionCreators from '../actions/actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -70,11 +70,11 @@ class App extends React.Component {
 			<div>
 				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
 					<div className='search__box'>
-						<input placeholder='Src' value={this.state.src} onChange={(event) => { 
+						<input placeholder='From' value={this.state.src} onChange={(event) => { 
 							this.setState({src: event.target.value});
 							this.props.setSrcData(event.target.value);
 					}} type="text" />
-						<input placeholder='Destination' value={this.state.destination} onChange={(event) => { 
+						<input placeholder='To' value={this.state.destination} onChange={(event) => { 
  							this.setState({destination: event.target.value});
 							this.props.setDestinationData(event.target.value);
 						}} type="text" />
@@ -82,24 +82,45 @@ class App extends React.Component {
 							<img src='/images/car.svg' className={'search__button'} onClick={() => {
 
 								if(this.state.src && this.state.destination) getTrafficCall(this.state.src, this.state.destination)
-		            .then((geo) => {
+		            .then((resp) => {
+		            	console.log("RESPONSE DATA");
+		              this.props.setCarData(
+		              	{
+		              		title: "Mclaruen Rack",
+		              		destination: "Detroit, Center!",
+		              		danger: Math.floor(Math.random() * 100) + 1,
+		              		progress: Math.floor(Math.random() * 100) + 1
+		              	}		       
+		              )
 		              this.props.setScreenData(1);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setCarData(
+		             	 	{
+		              		title: "Monsaius Temple",
+		              		destination: "Detroit, Center!",
+		              		danger: Math.floor(Math.random() * 65) + 25,
+		              		progress: Math.floor(Math.random() * 65) + 25
+		              	}		       
+		              )
+		            	this.props.setScreenData(1);
+		            	return error;
 		            }); 
 							}} ></img>
 							<img src='/images/bus.svg' className={'search__button'} onClick={() => {
-								getTrafficCall()
+								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(2);
 		            }); 
 							}} ></img >
 							<img src='/images/position.png' className={'search__button'} onClick={() => {
-								getTrafficCall()
+								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(3);
 		            }); 
 							}} ></img >
 							<img src='/images/uber2.png' className={'search__button'} onClick={() => {
-								getTrafficCall()
+								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(4);
 		            }); 
@@ -194,8 +215,6 @@ class App extends React.Component {
 	}
 
   render () {
-
-  
 	  let searchClass = classNames({
 	    'search__title': true,
 	  });

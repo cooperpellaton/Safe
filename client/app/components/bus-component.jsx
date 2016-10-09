@@ -31,7 +31,7 @@ class BusScreen extends React.Component {
       position:'relative',
       width:'90%', 
       margin:'auto',
-      'margin-bottom':'10px',
+      'margin-bottom' :'10px',
     }
 
     const busStyle4 = {
@@ -61,7 +61,7 @@ class BusScreen extends React.Component {
     }
 
     const dangerStyle ={
-      width: ((30.0/50.0) * 100) + "%"
+      width: (Math.floor(Math.random() * 65) + 35) + "%"
     }
 
     return (
@@ -70,8 +70,8 @@ class BusScreen extends React.Component {
         <img src="client/app/images/maps-att.png" style={busStyle1}></img>
       </div>
       <div className="info-bus">
-        <p>"Waiting Time:"</p>
-        <p>"Bus station:"</p>
+        <p>Waiting Time: {"17 Min"} </p>
+        <p>Bus station: {"Harvard Way"} </p>
       </div>
 
     <div className="infos-ml" style={busStyle2}>
