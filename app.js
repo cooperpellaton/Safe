@@ -175,7 +175,7 @@ var getTime = function(data, original){
     var stops = blob["data"]["references"]["stops"];
     var i = 0;
     while (i<stops.length) {
-        if(stops[i]["lon"].equals(long) && stops[i]["lat"].equals(lat)){
+        if(stops[i]["lon"]===long && stops[i]["lat"]===lat){
             stopNext = stops[i]["id"];
         }
         i++;
@@ -183,7 +183,7 @@ var getTime = function(data, original){
     var buses = blob["data"]["list"];
     var i = 0;
     while(i<buses.length) {
-        if (buses[i]["nextStop"].equals(stopNext)) {
+        if (buses[i]["nextStop"]===stopNext) {
             return buses[i]["nextStopTimeOffset"];
         }
     }
