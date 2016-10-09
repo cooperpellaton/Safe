@@ -198,6 +198,7 @@ var extractInfoToo = function(data) {
         };
     } else {
         return {
+            clarification: "There's no bus coming because nothing matched to that stop.",
             coordinates: data.coordinates,
             busTime: null,
             f: "waitML2"
