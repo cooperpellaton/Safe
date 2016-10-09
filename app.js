@@ -136,8 +136,10 @@ app.post("/api/doSomeML", function(req, res) {
                 console.log('exec error: ' + error);
             }
         });
-        var content1 = fs.readFileSync('risk.dat');
-        var content2 = fs.readFileSync('danger.dat');
+        var content1 = fs.readFileSync('risk.dat', 'utf8');
+        var content2 = fs.readFileSync('danger.dat', 'utf8');
+        console.log("Content of Risk: " + content1);
+        console.log("Content of Danger: " + content2);
         var jsonResp = {"risk": content1, "danger": content2};
         res.setHeader('content-type', 'text/javascript');
         res.send(JSON.stringify(jsonResp));
