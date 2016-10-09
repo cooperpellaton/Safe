@@ -155,9 +155,13 @@ app.post("/api/doSomeML", function(req, res) {
      */
 
 var checkBuses = function(data) {
-    bus_element = data["routes"];
-    if (bus_element.length > 0) {
-        return true;
+    bus_element = data["routes"]["legs"]["steps"];
+    for(var i = 0; i < bus_element.length; i++){
+        e = bus_element[i];
+        if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
+            console.log("Result we were looking for from Google: " + e);
+            return e;
+        }
     }
 }
 
@@ -206,6 +210,24 @@ var extractInfoToo = function(data) {
     }
 };
 
+function handle(coordinates) {
+    
+    return Promise.props(coordinates)
+    .then(makeURL)
+    .then(rp)
+    .then(JSON.parse)
+    .then((params)=> {
+        return {
+            coordinates: coordinates,
+            busTime: getTime(params, coordinates)
+        }
+    }).catch(function(e){
+        console.log(e);
+    });
+
+    
+}
+
 app.post("/api/nextBus", function(req, res) {
     var original = {
         originLat: req.body["from"][0],
@@ -220,28 +242,21 @@ app.post("/api/nextBus", function(req, res) {
         destination: req.body["to"][0] + "," + req.body["to"][1]
     }).then((params) => `https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=${params.origin}&destination=${params.destination}&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0`).then(rp).then(JSON.parse).then(checkBuses);
 
-    var busTime = Promise.props(original)
-    .then(makeURL)
-    .then(rp)
-    .then(JSON.parse)
-    .then((params)=> {
-        return Promise.resolve(getTime(params, original))
-    }).catch(function(e){
+    coordinates
+    .then(handle)
+    .then(extractInfoToo)
+    .then(res.send.bind(res))
+    .catch(function(e){
         console.log(e);
     });
-
-    Promise.props({
-        coordinates: coordinates,
-        busTime: busTime
-    }).then(extractInfoToo).then(res.send.bind(res)).catch(function(e){
-        console.log(e);
-    });
+    
 });
 /**
  * This route will order an uber for the user. It assumes that the location is 
  * posted to the route in the format {[LAT, LONG],[LAT, LONG]}.
  */
 app.post("/api/orderUber", function(req, res) {
+    console.log(req.body);
     var uberURLCall = "uber://?client_id=cCpG5qtrxGxCzApGenztSMTYhqE_yirV&action=setPickup&pickup[latitude]=" + req.body[1]["lat"] + "&pickup[longitude]=" + req.body[1]["long"] + "&dropoff[latitude]=" + req.body[2]["lat"] + "&dropoff[longitude]=" + req.body[2]["long"];
     res.send(request.get(uberURLCall));
 });
