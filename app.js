@@ -168,6 +168,7 @@ var makeURL = function(data) {
 }
 var getTime = function(data, original){
     var blob = data;
+    console.log(blob);
     var long = original.originalLat;
     var lat = original.originalLong;
     var stopNext;
