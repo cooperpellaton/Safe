@@ -15,7 +15,7 @@ class CarScreen extends React.Component {
   render() {
    const carStyle1 = {
       width:'100%',
-      height:'100%'
+      height:'30%'
     }
 
     const carStyle2 = {

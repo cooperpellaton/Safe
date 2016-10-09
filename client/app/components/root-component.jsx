@@ -112,12 +112,20 @@ class App extends React.Component {
 								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(2);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setScreenData(2);
+		            	return error;
 		            }); 
 							}} ></img >
 							<img src='/images/position.png' className={'search__button'} onClick={() => {
 								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(2);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setScreenData(2);
+		            	return error;
 		            }); 
 							}} ></img >
 							<img src='/images/uber2.png' className={'search__button'}></img>
@@ -148,7 +156,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 				</button>
-				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				<h1 className={searchClass}> `'!Safe'` The ML Destination Safety Planner! </h1>
 				<div className='search__box'>
 					<div className='search__box-inner'>
 						<CarScreen
