@@ -190,15 +190,15 @@ var getTime = function(data, original){
 }
 
 var extractInfoToo = function(data) {
-    if (!busTime.equals(null)) {
+    if (!data.busTime===null) {
         return {
-            coordinates: coordinates,
-            busTime: busTime,
+            coordinates: data.coordinates,
+            busTime: data.busTime,
             f: "waitML2"
         };
     } else {
         return {
-            coordinates: coordinates,
+            coordinates: data.coordinates,
             busTime: null,
             f: "waitML2"
         };
