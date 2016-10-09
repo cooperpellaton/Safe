@@ -200,8 +200,8 @@ app.post("/api/nextBus", function(req, res) {
      * req.body = [[lat, long], [lat, long]]
      */
     var coordinates = Promise.props({
-        origin: "" + req.body[0][0] + "," + req.body[0][1],
-        destiniation: "" + req.body[1][0] + "," + req.body[1][1]
+        origin: "" + req.body["from"][0] + "," + req.body["from"][1],
+        destiniation: "" + req.body["to"][0] + "," + req.body["to"][1]
     }).then((params) => `https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=${params.origin}destination=${params.destination}&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0`).then(rp).then(JSON.parse).then(checkBuses);
     var busTime = Promise.props({
         englishStopName: req.body["stop_name"]
