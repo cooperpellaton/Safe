@@ -14,6 +14,11 @@ const mapStateToProps = (state) => {
   return { 
   	screenReducer: state.screenReducer,
   	locationReducer: state.locationReducer,
+  	srcReducer: state.srcReducer,
+  	destinationReducer: state.destinationReducer,
+  	carReducer: state.carReducer,
+  	busReducer: state.busReducer,
+  	watchReducer: state.watchReducer,
   }
 }
 
@@ -22,6 +27,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class App extends React.Component {
+	constructor(){
+		super();
+		 this.state = {
+      src: '',
+      destination: '',
+    };
+	}
 
 	renderTrafficData() {
 	  return (
@@ -58,11 +70,18 @@ class App extends React.Component {
 			<div>
 				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
 					<div className='search__box'>
-						<input placeholder='Src' value={this.state.src} onChange={(event) => { this.setState({src: event.value})}} type="text" />
-						<input placeholder='Destination' value={this.state.destination} onChange={(event) => { this.setState({destination: event.value})}} type="text" />
+						<input placeholder='Src' value={this.state.src} onChange={(event) => { 
+							this.setState({src: event.target.value});
+							this.props.setSrcData(event.target.value);
+					}} type="text" />
+						<input placeholder='Destination' value={this.state.destination} onChange={(event) => { 
+ 							this.setState({destination: event.target.value});
+							this.props.setDestinationData(event.target.value);
+						}} type="text" />
 						<div className='search__box-inner'>
 							<img src='/images/car.svg' className={'search__button'} onClick={() => {
-								getTrafficCall(this.state.src, this.state.destination)
+
+								if(this.state.src && this.state.destination) getTrafficCall(this.state.src, this.state.destination)
 		            .then((geo) => {
 		              this.props.setScreenData(1);
 		            }); 
@@ -97,10 +116,17 @@ class App extends React.Component {
 	  });
 		return (
 			<div>
+				<button 
+							className='search__button'
+							onClick={() => {this.props.setScreenData(0)}}
+						>Back
+				</button>
 				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
 				<div className='search__box'>
 					<div className='search__box-inner'>
-						<CarScreen/>
+						<CarScreen
+							carData={this.props.carReducer}
+						/>
 					</div>
 				</div>
 			</div>
@@ -113,10 +139,17 @@ class App extends React.Component {
 	  });
 		return (
 				<div>
+					<button 
+							className='search__button'
+							onClick={() => {this.props.setScreenData(0)}}
+						>Back
+					</button>
 					<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
 					<div className='search__box'>
 						<div className='search__box-inner'>
-							<BusScreen/>
+							<BusScreen
+								busData={this.props.busReducer}
+							/>
 						</div>
 					</div>
 				</div>
@@ -129,6 +162,11 @@ class App extends React.Component {
 	  });
 		return (
 					<div>
+						<button 
+							className='search__button'
+							onClick={() => {this.props.setScreenData(0)}}
+						>Back
+						</button>
 						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
 						<div className='search__box'>
 							<div className='search__box-inner'>
@@ -156,6 +194,8 @@ class App extends React.Component {
 	}
 
   render () {
+
+  
 	  let searchClass = classNames({
 	    'search__title': true,
 	  });
@@ -210,7 +250,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    ScreenNumber: React.PropTypes.number,
+    screenReducer: React.PropTypes.number,
 
     // Actions
     setScreenData: React.PropTypes.func,

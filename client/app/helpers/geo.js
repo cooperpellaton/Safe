@@ -19,12 +19,11 @@ function getUserTrafficData(){
 	});
 }
 
-
 export function getTrafficCall() {
 	var myGeo;
 	return getUserTrafficData()
 	.then(function(){
-		console.log("GET CALL ARGUMENTS " + arguments);
+		console.log(arguments);
 		return arguments;
 	});
 }
@@ -44,7 +43,7 @@ export function busCall(src, destination) {
 	var myGeo;
 	return getCoordinatesAsync()
 	.then(function(geo){
-		myGeo = geo;
+		myGeo = [geo.coords.latitude, geo.coords.longitude];
 		return [geo, src, destination]
 	})
 	.then(postUserTrafficData)
