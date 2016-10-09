@@ -166,10 +166,13 @@ var checkBuses = function(data) {
     }
 }
 
-var getTime = function(data) {
+var makeURL = function(data) {
     /** Remaining time **/
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
-    var returnedJSON = request(requestURL);
+    return (requestURL);
+}
+var getTime = function(data){
+    console.log("Get Time Data: " + data);
     var englishStopName = data;
     var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
     for (bus in returnedJSON["data"]["list"]) {
@@ -205,7 +208,7 @@ app.post("/api/nextBus", function(req, res) {
     }).then((params) => `https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=${params.origin}destination=${params.destination}&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0`).then(rp).then(JSON.parse).then(checkBuses);
     var busTime = Promise.props({
         englishStopName: req.body["stop_name"]
-    }).then(getTime);
+    }).then(makeURL).then(rp).then(getTime);
     Promise.props({
         coordinates: coordinates,
         busTime: busTime
