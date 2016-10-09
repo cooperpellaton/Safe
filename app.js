@@ -179,6 +179,22 @@ var getTime = function(data) {
     }
 }
 
+var extractInfoToo = function(data) {
+    if (!busTime.equals(null)) {
+        return {
+            coordinates: coordinates,
+            busTime: busTime,
+            f: "waitML2"
+        };
+    } else {
+        return {
+            coordinates: coordinates,
+            busTime: null,
+            f: "waitML2"
+        };
+    }
+};
+
 app.post("/api/nextBus", function(req, res) {
     /*
      * req.body = [[lat, long], [lat, long]]
@@ -193,8 +209,7 @@ app.post("/api/nextBus", function(req, res) {
     Promise.props({
         coordinates: coordinates,
         busTime: busTime
-        f: "waitML"
-    }).then(res.send.bind(res));
+    }).then(extractInfoToo).then(res.send.bind(res));
 });
 /**
  * This route will order an uber for the user. It assumes that the location is 
