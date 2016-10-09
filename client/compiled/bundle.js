@@ -23884,7 +23884,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: searchClass },
-						' Detroit Destination Safety Planner! '
+						' !Safe - Destination Safety Tracker '
 					),
 					_react2.default.createElement(
 						'div',
@@ -23983,7 +23983,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: searchClass },
-						' `\'!Safe\'` The ML Destination Safety Planner! '
+						' !Safe - Destination Safety Tracker '
 					),
 					_react2.default.createElement(
 						'div',
@@ -24022,7 +24022,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: searchClass },
-						' Detroit Destination Safety Planner! '
+						' !Safe - Destination Safety Tracker '
 					),
 					_react2.default.createElement(
 						'div',
@@ -24061,7 +24061,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: searchClass },
-						' Detroit Destination Safety Planner! '
+						' !Safe - Destination Safety Tracker '
 					),
 					_react2.default.createElement(
 						'div',
@@ -24088,7 +24088,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: searchClass },
-						' Detroit Destination Safety Planner! '
+						' !Safe - Destination Safety Tracker '
 					),
 					_react2.default.createElement(
 						'div',
@@ -31297,7 +31297,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".search__title {\n\tfont-family: Raleway, Helvetica;\n\tfont-size: 24px;\n\tfont-style: normal;\n\tfont-variant: normal;\n\tfont-weight: 500;\n\tline-height: 26.4px;\n\ttext-align: center;\n\twidth: 100%;\n\tbackground-color: #e55947;\n\tpadding: 10px;\n\tcolor: #fff;\n}\n\ninput[type=text] {\n   box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border: 1px solid #C2C2C2;\n    box-shadow: 1px 1px 4px #EBEBEB;\n    -moz-box-shadow: 1px 1px 4px #EBEBEB;\n    -webkit-box-shadow: 1px 1px 4px #EBEBEB;\n    border-radius: 3px;\n    -webkit-border-radius: 3px;\n    -moz-border-radus: 3px;\n    padding: 10px;\n    outline: none;\n    display: flex;\n    margin: 10px;\n}\n\n\ninput[type=text]:focus {\n\tborder: 1px solid #0C0;\n}\n\n.search__box {\n\tbackground-color: #fff;\n\tmargin-left: auto;\n\tmargin-right: auto;\n\twidth: 500px;\n\tfont-family: Helvetica;\n\tpadding: 10px;\n\tborder: 5px solid #22DD7C;\n}\n\n.search__box-inner {\n    margin-left: 18px;\n }\n\n.search__box-inner > img {\nwidth:40%;\n}\n.search__box-inner > img > img {\nwidth:40%;\n}\n\n.search__box-inner > img > img > img{\n`width:40%;\n}\n\n.search__box-inner > img > img > img{\n\tcolor:#000;\n\tborder-radius: 100px;\n\twidth:40%;\n}\n\n.search__button:hover {\n\topacity: .5;\n\n}\n\n.search__button:active {\n  box-shadow: 0 3px 0 #00823F;\n  top: 3px;\n}\n\n.search__button {\n  min-height: 100%;\n  margin: 20px;\n}\n\n.search__result{\n\tpadding: 10px;\n}\n\n.progressbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.progressbar > div {\n   background-color: #467899;\n   height: 20px;\n   border-radius: 10px;\n}\n\n.geo__tracker {\n\t\tfont-family: helvetica;\n\t\ttext-align: center;\n\t\twidth: 100%;\n\t\theight: 40px;\n\t\tcolor: #fff;\n    background: #523179;\n    padding-top: 30px;\n    position: relative;\n    -webkit-animation: mymove 3s infinite; /* Chrome, Safari, Opera */\n    animation: mymove 3s infinite;\n    border-radius: 80px;\n\n}\n\n/* Chrome, Safari, Opera */\n@-webkit-keyframes mymove {\n    from {\n    \ttop:40px;\n    \topacity: 1;\n    }\n    to {\n    \ttop: 0px;\n    \topacity: 0;\n    }\n}\n\n@keyframes mymove {\n    from {\n    \ttop:50px;\n    \topacity: 1;\n    }\n    to {\n    \ttop: 0px;\n    \topacity: 0;\n    }\n}\n\n.watch__button{\n\t  width: 100%;\n    height: 55px;\n    background: #467899;\n    outline: none;\n    border: none;\n    font-size: 14px;\n    margin-top: 40px;\n    border-radius: 10px;\n}\n\n.watch__button:hover{\n\t   background: #5698c9;\n}\n\n.dangerbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.dangerbar > div {\n   background-color: #d13a3a;\n   height: 20px;\n   border-radius: 10px;\n}", ""]);
+	exports.push([module.id, ".search__title {\n\tfont-family: Raleway, Helvetica;\n\tfont-size: 24px;\n\tfont-style: normal;\n\tfont-variant: normal;\n\tfont-weight: 500;\n\tline-height: 26.4px;\n\ttext-align: center;\n\twidth: 100%;\n\tbackground-color: #e55947;\n\tpadding: 10px;\n\tcolor: #fff;\n}\n\ninput[type=text] {\n   box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border: 1px solid #C2C2C2;\n    box-shadow: 1px 1px 4px #EBEBEB;\n    -moz-box-shadow: 1px 1px 4px #EBEBEB;\n    -webkit-box-shadow: 1px 1px 4px #EBEBEB;\n    border-radius: 3px;\n    -webkit-border-radius: 3px;\n    -moz-border-radus: 3px;\n    padding: 10px;\n    outline: none;\n    display: flex;\n    margin: 10px;\n}\n\n\ninput[type=text]:focus {\n\tborder: 1px solid #0C0;\n}\n\n.search__box {\n\tbackground-color: #fff;\n\tmargin-left: auto;\n\tmargin-right: auto;\n\twidth: 500px;\n\tfont-family: Helvetica;\n\tpadding: 10px;\n\tborder: 5px solid #22DD7C;\n}\n\n.search__box-inner {\n    margin-left: 18px;\n }\n\n.search__box-inner > img {\nwidth:40%;\n}\n.search__box-inner > img > img {\nwidth:40%;\n}\n\n.search__box-inner > img > img > img{\n`width:40%;\n}\n\n.search__box-inner > img > img > img{\n\tcolor:#000;\n\tborder-radius: 100px;\n\twidth:40%;\n}\n\n.search__button:hover {\n\topacity: .5;\n\n}\n\n.search__button:active {\n  box-shadow: 0 3px 0 #00823F;\n  top: 3px;\n}\n\n.search__button {\n  min-height: 100%;\n  margin: 20px;\n}\n\n.search__result{\n\tpadding: 10px;\n}\n\n.progressbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.progressbar > div {\n   background-color: #467899;\n   height: 20px;\n   border-radius: 10px;\n}\n\n.geo__tracker {\n\t\tfont-family: helvetica;\n\t\ttext-align: center;\n\t\twidth: 100%;\n\t\theight: 30px;\n\t\tcolor: #fff;\n    background: #523179;\n    padding-top: 20px;\n    position: relative;\n    -webkit-animation: mymove 3s infinite; /* Chrome, Safari, Opera */\n    animation: mymove 3s infinite;\n    border-radius: 20px;\n\n}\n\n/* Chrome, Safari, Opera */\n@-webkit-keyframes mymove {\n    from {\n    \ttop:40px;\n    \topacity: 1;\n    }\n    to {\n    \ttop: 0px;\n    \topacity: 0;\n    }\n}\n\n@keyframes mymove {\n    from {\n    \ttop:50px;\n    \topacity: 1;\n    }\n    to {\n    \ttop: 0px;\n    \topacity: 0;\n    }\n}\n\n.watch__button{\n\t  width: 100%;\n    height: 55px;\n    background: #467899;\n    outline: none;\n    border: none;\n    font-size: 14px;\n    margin-top: 40px;\n    border-radius: 10px;\n}\n\n.watch__button:hover{\n\t   background: #5698c9;\n}\n\n.dangerbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.dangerbar > div {\n   background-color: #d13a3a;\n   height: 20px;\n   border-radius: 10px;\n}", ""]);
 	
 	// exports
 

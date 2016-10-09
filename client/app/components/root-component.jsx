@@ -69,7 +69,7 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 					<div className='search__box'>
 						<input placeholder='From' value={this.state.src} onChange={(event) => { 
 							this.setState({src: event.target.value});
@@ -156,7 +156,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 				</button>
-				<h1 className={searchClass}> `'!Safe'` The ML Destination Safety Planner! </h1>
+				<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 				<div className='search__box'>
 					<div className='search__box-inner'>
 						<CarScreen
@@ -179,7 +179,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 					</button>
-					<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+					<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 					<div className='search__box'>
 						<div className='search__box-inner'>
 							<BusScreen
@@ -202,7 +202,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 						</button>
-						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 						<div className='search__box'>
 							<div className='search__box-inner'>
 								<CarScreen/>
@@ -218,7 +218,7 @@ class App extends React.Component {
 	  });
 		return (
 					<div>
-						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 						<div className='search__box'>
 							<div className='search__box-inner'>
 								<WatchScreen/>
