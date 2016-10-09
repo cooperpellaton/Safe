@@ -169,7 +169,7 @@ var checkBuses = function(data) {
 var getTime = function(data) {
     /** Remaining time **/
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
-    var returnedJSON = request(requestURL, callback);
+    var returnedJSON = request(requestURL);
     var englishStopName = data;
     var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
     for (bus in returnedJSON["data"]["list"]) {
