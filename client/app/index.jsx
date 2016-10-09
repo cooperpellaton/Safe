@@ -12,3 +12,6 @@ render(
 		<App/>
   </Provider>
 	, document.getElementById('root'));
+
+// Universal Router
+// KriaSoft - Boilerplate

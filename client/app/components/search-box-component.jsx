@@ -22,9 +22,6 @@ class SearchBox extends React.Component {
 	    'search__result': true,
 	  });
 
-	  // var stationComponents = this.props.stations.map(function(station) {
-    //     return <div className="station">{station.call}</div>;
-    // });
 
     if (!this.props.trafficData) return;
 
