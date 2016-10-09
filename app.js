@@ -1,6 +1,10 @@
 /**
  * Module dependencies.
  */
+const os = require('os');
+const fs = require('fs')
+const exec = require('child_process').exec,
+    child;
 var Promise = require('bluebird');
 var rp = require('request-promise');
 var request = require('request');
@@ -250,30 +254,49 @@ app.get("/api/getComment", function(req, res) {
 
 var convertToXml = Promise.promisify(parseString);
 var extractInfo = function(data) {
-    console.log(data);
-    if (data.CCTraffic.location) {
+    var measurments = data.visibility.hourly.data.map((hour) => hour.visibility);
+    var visibility = measurments.reduce(function(sum, a) {
+        return sum + a
+    }, 0) / (measurments.length || 1) * 0.4;
+    if (data.traffic.CCTraffic.location) {
         return {
-            title: data.CCTraffic.location[0].title,
-            description: data.CCTraffic.location[0].description
+            title: data.traffic.CCTraffic.location[0].title,
+            description: data.traffic.CCTraffic.location[0].description,
+            visibility: visibility
         };
-    } else {
+    }
+    else {
         return "no incidents";
     }
 };
 var makeUrl = function(params) {
     return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
 };
+
 app.get("/api/trafficData", function(req, res) {
-        Promise.props({
+        var traffic= Promise.props({
             id: 17,
             type: "incident",
             max: 25,
             bLat: "42.203097639603264,42.459441175790076",
             bLng: "-83.25866010742186,-82.83293989257811",
             sort: "severity_priority asc"
-        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send.bind(res));
+        }).then((params) => `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`)
+          .then(rp)
+          .then(convertToXml);
+        
+        var visibility = Promise.props({
+            latitude: "42.203097639603264",
+            longitude: "-83.25866010742186"
+        }).then((params) => `https://api.darksky.net/forecast/dc0b864eaf08e3073401662ab0a3b463/${params.latitude},${params.longitude}`)
+          .then(rp)
+          .then(JSON.parse)
 
-    })
+        Promise.props({
+            traffic:traffic, 
+            visibility: visibility
+        }).then(extractInfo).then(res.send.bind(res));
+});
     /**
      * Error Handler.
      */
