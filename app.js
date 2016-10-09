@@ -233,7 +233,7 @@ app.get("/api/getRate", function(req, res) {
     // var average = (total/count);
     // res.send({"average" : average});
 });
-app.get("/api/putComment", function(req, res) {
+app.post("/api/putComment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var comment = req.body["comment"];
