@@ -52,8 +52,10 @@ if not clf:
 
 if len(sys.argv) >= 3:
     x = sys.argv[1:]
-    x = [[int(x[0]), int(x[1])]]
-    f = open('risk.dat','w')
+    a = float(x[0])
+    b = float(x[1])
+    x = [[int(a), int(b)]]
+    f = open('risk.dat', 'w')
     p = predict(clf, x)
     f.write(str(p[0]))
     f.close()
