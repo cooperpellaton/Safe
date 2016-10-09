@@ -218,6 +218,7 @@ app.post("/api/nextBus", function(req, res) {
     var busTime = Promise.props(original)
     .then(makeURL)
     .then(rp)
+    .then(JSON.parse)
     .then((params)=> {
         return Promise.resolve(getTime(params, original))
     }).catch(function(e){
