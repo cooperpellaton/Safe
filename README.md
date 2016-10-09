@@ -34,3 +34,13 @@ Run `npm install && nodemon app.js`. You now have our server running and can acc
 The rest should be pretty self-explanatory. If you're reading this you know how something like this would work. Just read through [app.js](app.js) where the core of the application is defined.
 
 ## API
+If the type is `POST` you are expected to provide `x-www-form-urlencoded` data in a JSON blob. If the type is `GET` then obviously, you don't need to do anyting :smile:.
+
+**POST**
+
+- /api/doSomeML
+	- This is the method that actually runs the ML models. It expects for you to provide the following.
+- 
+
+**GET**
+
