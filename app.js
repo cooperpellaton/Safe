@@ -155,13 +155,9 @@ app.post("/api/doSomeML", function(req, res) {
      */
 
 var checkBuses = function(data) {
-    bus_element = data["routes"]["legs"]["steps"];
-    for (var i = 0; i < bus_element.length; i++) {
-        e = bus_element[i];
-        if (e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS') {
-            bus_element = e;
-            return true;
-        }
+    bus_element = data["routes"];
+    if (bus_element.length > 0) {
+        return true;
     }
 }
 
@@ -201,7 +197,6 @@ var extractInfoToo = function(data) {
 };
 
 app.post("/api/nextBus", function(req, res) {
-
     var original = {
         originLat: req.body["from"][0],
         originLong: req.body["from"][1]
@@ -209,7 +204,7 @@ app.post("/api/nextBus", function(req, res) {
     /*
      * req.body = [[lat, long], [lat, long]]
      */
-    console.log("https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=$"+req.body["from"][0] + "," + req.body["from"][1]+"&destination=$"+req.body["to"][0] + "," + req.body["to"][1]+"&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0");
+    console.log("https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin="+req.body["from"][0] + "," + req.body["from"][1]+"&destination="+req.body["to"][0] + "," + req.body["to"][1]+"&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0");
     var coordinates = Promise.props({
         origin: req.body["from"][0] + "," + req.body["from"][1],
         destination: req.body["to"][0] + "," + req.body["to"][1]
