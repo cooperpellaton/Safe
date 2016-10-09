@@ -69,8 +69,8 @@ class CarScreen extends React.Component {
       </div>
       <div className="real-time">
         <div className="info">
-          <h4>{this.props.carData.danger}</h4>
-          <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
+          <h4>{"Detroit Many Plans"}</h4>
+          <p>Closed in Sanilac on I80 Stop Between I215 Leave Beller Way</p>
         </div>
         <div className="info">
           <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
