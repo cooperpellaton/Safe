@@ -219,6 +219,8 @@ app.post("/api/nextBus", function(req, res) {
     .then(rp)
     .then((params)=> {
         getTime(params, original)
+    }).catch(function(e){
+        console.log(e);
     });
 
     Promise.props({
