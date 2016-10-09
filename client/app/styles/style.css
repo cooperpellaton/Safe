@@ -132,7 +132,6 @@ h4, h3, p{
 }
 
 .real-time{
-  background-color: #fff;
   padding-top: 10px;
 }
 
@@ -157,3 +156,45 @@ h4, h3, p{
   margin:auto;
   margin-bottom:20px;
 }
+
+/************************CSS FOR THE STARS*****************************/
+
+*{font-family:"Courier New", Courier, monospace}
+form {
+  width: 200px;
+  margin: 5px auto;
+}
+
+form p,
+form input[type="submit"] {
+  padding-right: -10px;
+  text-align: right;
+  font-size: 45px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  color: grey;
+}
+
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+label:hover,
+label:hover ~ label {
+  color: orange;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+
+
+
+
+
