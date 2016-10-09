@@ -15,7 +15,7 @@ We were posed a problem by both Ford and Devpost, that the city of Detroit is no
 Welcome *!Safe*, a platform to best help you get from Point A --> Point B in the city of Detroit.
 
 View the following screenshots of the application in action:
-![](assets/iPhone_home.png)
+![](assets/iPhone_home_correct.png)
 
 See the the route in the context of private transportation:
 ![](assets/iPhone_private_transport.png)
