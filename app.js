@@ -163,7 +163,7 @@ var checkBuses = function(data) {
         var k = 0;
         while (k<bus_elementSecond.length){
             console.log("got to k");
-            bus_element=bus_elementSecond["steps"];
+            bus_element=bus_elementSecond[k]["steps"];
             for(var j = 0; j < bus_element.length; j++){
                 console.log("got to j");
                 e = bus_element[j];
