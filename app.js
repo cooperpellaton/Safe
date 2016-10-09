@@ -214,7 +214,7 @@ app.post("/api/nextBus", function(req, res) {
         destiniation: "" + req.body["to"][0] + "," + req.body["to"][1]
     }).then((params) => `https://maps.googleapis.com/maps/api/directions/json?&mode=transit&origin=${params.origin}destination=${params.destination}&key=AIzaSyBLyhBEBnRBD5nFdu4Blw5k7IKYFV59MI0`).then(rp).then(JSON.parse).then(checkBuses);
 
-    var busTime = Promise.props(orginal)
+    var busTime = Promise.props(original)
     .then(makeURL)
     .then(rp)
     .then((params)=> {
