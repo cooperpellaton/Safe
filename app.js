@@ -155,13 +155,23 @@ app.post("/api/doSomeML", function(req, res) {
      */
 
 var checkBuses = function(data) {
-    bus_element = data["routes"]["legs"]["steps"];
-    for(var i = 0; i < bus_element.length; i++){
-        e = bus_element[i];
-        if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
-            console.log("Result we were looking for from Google: " + e);
-            return e;
+    bus_elementHigher = data["routes"];
+    var i = 0;
+    while (i<bus_elementHigher.length){
+        bus_elementSecond=bus_elementHigher[i]["legs"]
+        var k = 0;
+        while (k<bus_elementSecond.length){
+            bus_element=bus_elementSecond["steps"];
+            for(var j = 0; j < bus_element.length; j++){
+                e = bus_element[j];
+                if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
+                    console.log("Result we were looking for from Google: " + e);
+                    return e;
+                }
+            }
+            k++;
         }
+        i++;
     }
 }
 
