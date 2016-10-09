@@ -176,12 +176,13 @@ var getTime = function(data, original){
     var long = original.originalLat;
     var lat = original.originalLong;
     var englishStopName = data;
-    var stopID = (returnedJSON["data"]["references"]["stops"]["name"]).equals(englishStopName);
-    for (bus in returnedJSON["data"]["list"]) {
-        if (bus["nextStop"].equals(stopID)) {
-            return stop["nextStopTimeOffset"];
-        }
-    }
+    
+    // var stopID = (blob["data"]["references"]["stops"]["name"]).equals(englishStopName);
+    // for (bus in returnedJSON["data"]["list"]) {
+    //     if (bus["nextStop"].equals(stopID)) {
+    //         return stop["nextStopTimeOffset"];
+    //     }
+    // }
 }
 
 var extractInfoToo = function(data) {
@@ -218,7 +219,7 @@ app.post("/api/nextBus", function(req, res) {
     .then(makeURL)
     .then(rp)
     .then((params)=> {
-        getTime(params, original)
+        return Promise.resolve(getTime(params, original))
     }).catch(function(e){
         console.log(e);
     });
