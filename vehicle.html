@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Injoy</title>
+	<title>Detroit</title>
     <style>
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
-      #map {
-        height: 100%;
       }
       #floating-panel {
         position: absolute;
@@ -148,11 +145,11 @@
         for (var i = 0; i < myRoute.steps.length; i++) {
           // For disabling the marker
 
-          // var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-          // marker.setMap(map);
-          // marker.setPosition(myRoute.steps[i].start_location);
-          // attachInstructionText(
-          //     stepDisplay, marker, myRoute.steps[i].instructions, map);
+          var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+          marker.setMap(map);
+          marker.setPosition(myRoute.steps[i].start_location);
+          attachInstructionText(
+              stepDisplay, marker, myRoute.steps[i].instructions, map);
         }
       }
 
