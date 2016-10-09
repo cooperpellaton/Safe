@@ -173,7 +173,9 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
  *
  */
 app.post("/api/doSomeML", function(req, res) {
-        child = exec('python python/ml_risk.py ' + req.body[0] + req.body[1], function(error, stdout, stderr) {
+        var d = new Date();
+        var hour = d.getHours();
+        child = exec('python python/ml_risk.py ' + hour + ' ' + req.body['visibility'], function(error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
