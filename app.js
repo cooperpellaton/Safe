@@ -159,10 +159,13 @@ var checkBuses = function(data) {
     var i = 0;
     while (i<bus_elementHigher.length){
         bus_elementSecond=bus_elementHigher[i]["legs"]
+        console.log("got to i");
         var k = 0;
         while (k<bus_elementSecond.length){
+            console.log("got to k");
             bus_element=bus_elementSecond["steps"];
             for(var j = 0; j < bus_element.length; j++){
+                console.log("got to j");
                 e = bus_element[j];
                 if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
                     console.log("Result we were looking for from Google: " + e);
