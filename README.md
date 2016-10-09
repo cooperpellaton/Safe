@@ -17,6 +17,16 @@ Welcome *!Safe*, a platform to best help you get from Point A --> Point B in the
 View the following screenshots of the application in action:
 ![](assets/iPhone_home.png)
 
+See the the route in the context of private transportation:
+![](assets/iPhone_private_transport.png)
+
+See the route in the context of public transportation:
+![](assets/iPhone_public_transport.png)
+![](assets/iPhone_public_transport_2.png)
+
+Share your location with your loved ones so they can be alerted if your danger/risk ration changes:
+![](assets/iPhone_share.png)
+
 ## Explanation
 Detroit is not a safe city, we all know this, so we began by writing some ML models to help calculate the apparent risk and danger associated with travelling along a certain route. These models are composed with a number of data sets, but at the highest level we mix user related stastics with city crime data, weather data, traffic data, etc. to determine what the potential downsides of travelling amongst a certain path are.
 
