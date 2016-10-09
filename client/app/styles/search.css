@@ -81,3 +81,28 @@ width:40%;
 .search__result{
 	padding: 10px;
 }
+
+.progressbar {
+  background-color: #dfdfdf;
+	border-radius: 13px;
+	padding: 3px;
+}
+
+.progressbar > div {
+   background-color: #467899;
+   height: 20px;
+   border-radius: 10px;
+}
+
+
+.dangerbar {
+  background-color: #dfdfdf;
+	border-radius: 13px;
+	padding: 3px;
+}
+
+.dangerbar > div {
+   background-color: #d13a3a;
+   height: 20px;
+   border-radius: 10px;
+}

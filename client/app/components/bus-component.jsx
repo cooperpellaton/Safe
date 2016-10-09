@@ -60,21 +60,25 @@ class BusScreen extends React.Component {
       'box-shadow': '4px 4px 0px #3a6fda'
     }
 
+    const dangerStyle ={
+      width: ((30.0/50.0) * 100) + "%"
+    }
+
     return (
     <div>
-      <div class="map-header">
+      <div className="map-header">
         <img src="client/app/images/maps-att.png" style={busStyle1}></img>
       </div>
-      <div class="info-bus">
+      <div className="info-bus">
         <p>"Waiting Time:"</p>
         <p>"Bus station:"</p>
       </div>
 
-    <div class="infos-ml" style={busStyle2}>
-      <div class="safety">
+    <div className="infos-ml" style={busStyle2}>
+      <div className="safety">
         <h3>Danger meter</h3>
-        <div class="danger-risk">
-          <div class="dp">
+        <div className="dangerbar">
+          <div style={dangerStyle}>
           </div>
         </div>
       </div>
@@ -84,10 +88,10 @@ class BusScreen extends React.Component {
       <h3>Stay Safe</h3>
     </div>
     
-    <div class="real-time">
-      <div class="add-comment">
+    <div className="real-time">
+      <div className="add-comment">
         <textarea name="comment" style={busStyle5} placeholder="Add a safe spot next to this station"></textarea>
-        <button class="add-butt"  style={busStyle6}>Comment</button>
+        <button className="add-butt"  style={busStyle6}>Comment</button>
       </div>
     </div>
   </div>

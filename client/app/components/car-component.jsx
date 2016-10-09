@@ -29,6 +29,14 @@ class CarScreen extends React.Component {
       'marginBottom': '10px'
     }
 
+    const progressStyle ={
+      width: ((10.0/50.0) * 100) + "%"
+    }
+
+    const dangerStyle ={
+      width: ((30.0/50.0) * 100) + "%"
+    }
+
   	let carClass = classNames({
 	    'car__screen': true,
     });
@@ -42,14 +50,14 @@ class CarScreen extends React.Component {
       <div className="infos-ml" style={carStyle2}>
         <div className="risk">
         <h3>Accident risk</h3>
-        <div className="progress-risk">
-          <div className="rp"></div>
+        <div className="progressbar">
+          <div style={progressStyle}></div>
         </div>
         </div>
         <div className="safety">
           <h3>Danger meter</h3>
-          <div className="danger-risk">
-            <div className="dp"></div>
+          <div className="dangerbar">
+            <div style={dangerStyle}></div>
           </div>
         </div>
       </div>
@@ -58,18 +66,6 @@ class CarScreen extends React.Component {
         <h3>Live Information</h3>
       </div>
       <div className="real-time">
-        <div className="info">
-          <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
-          <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
-        </div>
-        <div className="info">
-          <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
-          <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
-        </div>
-        <div className="info">
-          <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
-          <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
-        </div>
         <div className="info">
           <h4>MI-25 WB between Gardner Line Rd and Burns Line Rd</h4>
           <p>Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd</p>
