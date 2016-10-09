@@ -260,10 +260,14 @@ var extractInfo = function(data) {
             description: data.traffic.CCTraffic.location[0].description,
             visibility: visibility,
             f: "waitML"
-
         };
     } else {
-        return "no incidents";
+        return {
+            title: null,
+            description: null,
+            visibility: visibility,
+            f: "waitML"
+        };
     }
 };
 var makeUrl = function(params) {
