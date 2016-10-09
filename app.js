@@ -129,7 +129,7 @@ app.post("/api/doSomeML", function(req, res) {
                 console.log('exec error: ' + error);
             }
         });
-        child = exec('python python/ml_danger.py ' + req.body['neighborhood'] + ' ' + hour, function(error, stdout, stderr) {
+        child = exec('python python/ml_danger.py ' + req.body['lat'] + ' ' + req.body['long'] + ' ' + hour, function(error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
@@ -254,7 +254,9 @@ var extractInfo = function(data) {
         return {
             title: data.traffic.CCTraffic.location[0].title,
             description: data.traffic.CCTraffic.location[0].description,
-            visibility: visibility
+            visibility: visibility,
+            f: "waitML"
+
         };
     } else {
         return "no incidents";
