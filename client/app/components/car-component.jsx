@@ -15,7 +15,7 @@ class CarScreen extends React.Component {
   render() {
    const carStyle1 = {
       width:'100%',
-      height:'100%'
+      height:'30%'
     }
 
     const carStyle2 = {
@@ -46,7 +46,7 @@ class CarScreen extends React.Component {
     return (
     <div>
       <div className="map-header">
-      <img src="/client/app/images/maps-att.png" style={carStyle1}></img>
+      <img src="/client/app/images/map.jpeg" style={carStyle1}></img>
       </div>
 
       <div className="infos-ml" style={carStyle2}>

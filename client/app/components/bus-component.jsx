@@ -20,7 +20,7 @@ class BusScreen extends React.Component {
 
     const busStyle1 = {
       width:'100%',
-      height:'100%'
+      height:'30%'
     }
 
     const busStyle2 = {
@@ -61,7 +61,7 @@ class BusScreen extends React.Component {
     }
 
     const dangerStyle ={
-      width: (Math.floor(Math.random() * 65) + 35) + "%"
+      width: (Math.floor(Math.random() * 65) + 1) + "%"
     }
 
     return (

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import SearchBox from '../components/search-box-component.jsx'
 import CarScreen from '../components/car-component.jsx'
 import BusScreen from '../components/bus-component.jsx'
+import WatchScreen from '../components/watch-component.jsx'
 import Geo from '../helpers/geo';
 import {testFunction} from '../helpers/testHelper';
 import {busCall, getTrafficCall, getTestTrafficCall } from '../helpers/geo';
@@ -68,7 +69,7 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 					<div className='search__box'>
 						<input placeholder='From' value={this.state.src} onChange={(event) => { 
 							this.setState({src: event.target.value});
@@ -111,20 +112,33 @@ class App extends React.Component {
 								getTestTrafficCall()
 		            .then((geo) => {
 		              this.props.setScreenData(2);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setScreenData(2);
+		            	return error;
 		            }); 
 							}} ></img >
 							<img src='/images/position.png' className={'search__button'} onClick={() => {
 								getTestTrafficCall()
 		            .then((geo) => {
-		              this.props.setScreenData(3);
+		              this.props.setScreenData(2);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setScreenData(2);
+		            	return error;
 		            }); 
 							}} ></img >
-							<img src='/images/uber2.png' className={'search__button'} onClick={() => {
+							<img src='/images/uber2.png' className={'search__button'}></img>
+								<button src='/images/uber2.png' className={'watch__button'} onClick={() => {
 								getTestTrafficCall()
 		            .then((geo) => {
-		              this.props.setScreenData(4);
+		              this.props.setScreenData(5);
+		            }).catch((error)=>{
+		            	console.log('RESPONSE in here with an error', error)
+		            	this.props.setScreenData(5);
+		            	return error;
 		            }); 
-							}} ></img>
+							}} >Watch Mode</button>
 						</div>
 					</div>
 				</div>
@@ -142,7 +156,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 				</button>
-				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 				<div className='search__box'>
 					<div className='search__box-inner'>
 						<CarScreen
@@ -165,7 +179,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 					</button>
-					<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+					<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 					<div className='search__box'>
 						<div className='search__box-inner'>
 							<BusScreen
@@ -188,7 +202,7 @@ class App extends React.Component {
 							onClick={() => {this.props.setScreenData(0)}}
 						>Back
 						</button>
-						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 						<div className='search__box'>
 							<div className='search__box-inner'>
 								<CarScreen/>
@@ -204,11 +218,16 @@ class App extends React.Component {
 	  });
 		return (
 					<div>
-						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<h1 className={searchClass}> !Safe - Destination Safety Tracker </h1>
 						<div className='search__box'>
 							<div className='search__box-inner'>
-								<CarScreen/>
+								<WatchScreen/>
 							</div>
+							<button 
+							className='watch__button'
+							onClick={() => {this.props.setScreenData(0)}}
+							>Stop Watching
+						</button>
 						</div>
 					</div>
 				)
@@ -257,10 +276,17 @@ class App extends React.Component {
 					</div>
 				)
 				break;
+			case 5:
+				return (
+					<div>
+						{ this.renderFifthScreen() }
+					</div>
+				)
+				break;
 			default:
 				return (
 					<div>
-						{ this.renderFirstScreen() }
+						{ this.renderFifthScreen() }
 					</div>
 				)
 				break;
