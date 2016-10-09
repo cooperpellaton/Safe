@@ -170,14 +170,19 @@ var getTime = function(data, original){
     var blob = data;
     var long = original.originalLat;
     var lat = original.originalLong;
-    var englishStopName = data;
-    
-    // var stopID = (blob["data"]["references"]["stops"]["name"]).equals(englishStopName);
-    // for (bus in returnedJSON["data"]["list"]) {
-    //     if (bus["nextStop"].equals(stopID)) {
-    //         return stop["nextStopTimeOffset"];
-    //     }
-    // }
+    var stopNext;
+    var stops = blob["data"]["references"]["stops"];
+    for stop in stops {
+        if(stop["lon"].equals(long) && stop["lat"].equals(lat)){
+            stopNext = stop["id"];
+        }
+    }
+
+    for (bus in blob["data"]["list"]) {
+        if (bus["nextStop"].equals(stopID)) {
+            return stop["nextStopTimeOffset"];
+        }
+    }
 }
 
 var extractInfoToo = function(data) {
