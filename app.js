@@ -72,7 +72,6 @@ var rateSchema = new mongoose.Schema({
     rate: Number
 });
 var ratesModel = mongoose.model('Rates', rateSchema);
-
 var commentSchema = new mongoose.Schema({
     location: [Number, Number],
     comment: String
@@ -171,29 +170,27 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 //     });
 // };
 /*
-*
-*/
-app.post("/api/doSomeML", function(req, res){
-     child = exec('python python/ml_risk.py ' + req.body[0] + req.body[1], function(error, stdout, stderr) {
+ *
+ */
+app.post("/api/doSomeML", function(req, res) {
+        child = exec('python python/ml_risk.py ' + req.body[0] + req.body[1], function(error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
                 console.log('exec error: ' + error);
             }
         });
-     res.send('python/risk.dat');
-})
-
-
-/**
- * This function takes in as a POST the stop that the user is electing to go 
- * to. Using this information the Detroit DOT API is queried for the nearest 
- * bus to that location and the time to arrival is returned. If no such bus is 
- * found going to that stop, false is returned.
- * A sample input: 
- * { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
- * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
- */
+        res.send('python/risk.dat');
+    })
+    /**
+     * This function takes in as a POST the stop that the user is electing to go 
+     * to. Using this information the Detroit DOT API is queried for the nearest 
+     * bus to that location and the time to arrival is returned. If no such bus is 
+     * found going to that stop, false is returned.
+     * A sample input: 
+     * { "_id" : ObjectId("57f88ec38d06beec95fbf2f1"), "stop_name" : "Harper & 
+     * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
+     */
 app.post("/api/nextBus", function(req, res) {
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
     var returnedJSON = request(requestURL, callback);
@@ -206,16 +203,14 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-
 /**
-* This route will order an uber for the user. It assumes that the location is 
-* posted to the route in the format {[LAT, LONG],[LAT, LONG]}.
-*/
-app.post("/api/orderUber", function(req, res){
-    var uberURLCall = "uber://?client_id=cCpG5qtrxGxCzApGenztSMTYhqE_yirV&action=setPickup&pickup[latitude]=" + req.body[1]["lat"]+ "&pickup[longitude]=" + req.body[1]["long"] + "&dropoff[latitude]=" + req.body[2]["lat"] + "&dropoff[longitude]=" + req.body[2]["long"];
+ * This route will order an uber for the user. It assumes that the location is 
+ * posted to the route in the format {[LAT, LONG],[LAT, LONG]}.
+ */
+app.post("/api/orderUber", function(req, res) {
+    var uberURLCall = "uber://?client_id=cCpG5qtrxGxCzApGenztSMTYhqE_yirV&action=setPickup&pickup[latitude]=" + req.body[1]["lat"] + "&pickup[longitude]=" + req.body[1]["long"] + "&dropoff[latitude]=" + req.body[2]["lat"] + "&dropoff[longitude]=" + req.body[2]["long"];
     res.send(request.get(uberURLCall));
 });
-
 app.post("/api/putRate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
@@ -229,7 +224,6 @@ app.post("/api/putRate", function(req, res) {
     });
     res.send("successful");
 });
-
 app.get("/api/getRate", function(req, res) {
     var allRates = db.collection("Rates").find();
     var val = Math.floor(0 + Math.random() * 6);
@@ -247,7 +241,6 @@ app.get("/api/getRate", function(req, res) {
     // var average = (total/count);
     // res.send({"average" : average});
 });
-
 app.get("/api/putComment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
@@ -260,13 +253,11 @@ app.get("/api/putComment", function(req, res) {
     });
     res.send("successful");
 });
-
 app.get("/api/getComment", function(req, res) {
     var comment = db.collection("Rates").findOne({});
     console.log("Comment for return: " + comment);
     res.send(comment);
 });
-
 var convertToXml = Promise.promisify(parseString);
 var extractInfo = function(data) {
     var measurments = data.visibility.hourly.data.map((hour) => hour.visibility);
@@ -279,42 +270,34 @@ var extractInfo = function(data) {
             description: data.traffic.CCTraffic.location[0].description,
             visibility: visibility
         };
-    }
-    else {
+    } else {
         return "no incidents";
     }
 };
 var makeUrl = function(params) {
     return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
 };
-
 app.get("/api/trafficData", function(req, res) {
-        var traffic= Promise.props({
-            id: 17,
-            type: "incident",
-            max: 25,
-            bLat: "42.203097639603264,42.459441175790076",
-            bLng: "-83.25866010742186,-82.83293989257811",
-            sort: "severity_priority asc"
-        }).then((params) => `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`)
-          .then(rp)
-          .then(convertToXml);
-        
-        var visibility = Promise.props({
-            latitude: "42.203097639603264",
-            longitude: "-83.25866010742186"
-        }).then((params) => `https://api.darksky.net/forecast/dc0b864eaf08e3073401662ab0a3b463/${params.latitude},${params.longitude}`)
-          .then(rp)
-          .then(JSON.parse)
-
-        Promise.props({
-            traffic:traffic, 
-            visibility: visibility
-        }).then(extractInfo).then(res.send.bind(res));
+    var traffic = Promise.props({
+        id: 17,
+        type: "incident",
+        max: 25,
+        bLat: "42.203097639603264,42.459441175790076",
+        bLng: "-83.25866010742186,-82.83293989257811",
+        sort: "severity_priority asc"
+    }).then((params) => `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`).then(rp).then(convertToXml);
+    var visibility = Promise.props({
+        latitude: "42.203097639603264",
+        longitude: "-83.25866010742186"
+    }).then((params) => `https://api.darksky.net/forecast/dc0b864eaf08e3073401662ab0a3b463/${params.latitude},${params.longitude}`).then(rp).then(JSON.parse)
+    Promise.props({
+        traffic: traffic,
+        visibility: visibility
+    }).then(extractInfo).then(res.send.bind(res));
 });
-    /**
-     * Error Handler.
-     */
+/**
+ * Error Handler.
+ */
 app.use(errorHandler());
 /**
  * Start Express server.
