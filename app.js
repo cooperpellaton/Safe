@@ -227,7 +227,9 @@ app.post("/api/nextBus", function(req, res) {
     Promise.props({
         coordinates: coordinates,
         busTime: busTime
-    }).then(extractInfoToo).then(res.send.bind(res));
+    }).then(extractInfoToo).then(res.send.bind(res)).catch(function(e){
+        console.log(e);
+    });
 });
 /**
  * This route will order an uber for the user. It assumes that the location is 
