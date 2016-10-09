@@ -193,6 +193,7 @@ app.post("/api/nextBus", function(req, res) {
     Promise.props({
         coordinates: coordinates,
         busTime: busTime
+        f: "waitML"
     }).then(res.send.bind(res));
 });
 /**
