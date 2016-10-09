@@ -167,7 +167,7 @@ var checkBuses = function(data) {
             for(var j = 0; j < bus_element.length; j++){
                 console.log("got to j");
                 e = bus_element[j];
-                if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
+                if(e['travel_mode'] == 'TRANSIT'){
                     console.log("Result we were looking for from Google: " + e);
                     return e;
                 }
