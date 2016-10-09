@@ -1,19 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
 import SearchBox from '../components/search-box-component.jsx'
+import CarScreen from '../components/car-component.jsx'
+import BusScreen from '../components/bus-component.jsx'
 import Geo from '../helpers/geo';
 import {testFunction} from '../helpers/testHelper';
-import {trafficCall} from '../helpers/geo';
-import * as actionCreators from '../actions/actions'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {busCall, getTrafficCall} from '../helpers/geo';
+import * as actionCreators from '../actions/actions';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return { 
-  	screenNumber: state.screenNumber,
-  	geo: state.geoNumber,
-  	src: state.src,
-  	destination: state.destination,
+  	screenReducer: state.screenReducer,
+  	locationReducer: state.locationReducer,
   }
 }
 
@@ -22,11 +22,11 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class App extends React.Component {
-	
+
 	renderTrafficData() {
 	  return (
 			<SearchBox 
-					trafficData={
+					trafficData= {
 				    [
 							{
 								location: "Harvard",
@@ -49,50 +49,167 @@ class App extends React.Component {
 	  	)
 	}
 
+	renderFirstScreen() {
+		let searchClass = classNames({
+	    'search__title': true,
+	  });
+
+		return (
+			<div>
+				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+					<div className='search__box'>
+						<input placeholder='Src' value={this.state.src} onChange={(event) => { this.setState({src: event.value})}} type="text" />
+						<input placeholder='Destination' value={this.state.destination} onChange={(event) => { this.setState({destination: event.value})}} type="text" />
+						<div className='search__box-inner'>
+							<img src='/images/car.svg' className={'search__button'} onClick={() => {
+								getTrafficCall(this.state.src, this.state.destination)
+		            .then((geo) => {
+		              this.props.setScreenData(1);
+		            }); 
+							}} ></img>
+							<img src='/images/bus.svg' className={'search__button'} onClick={() => {
+								getTrafficCall()
+		            .then((geo) => {
+		              this.props.setScreenData(2);
+		            }); 
+							}} ></img >
+							<img src='/images/position.png' className={'search__button'} onClick={() => {
+								getTrafficCall()
+		            .then((geo) => {
+		              this.props.setScreenData(3);
+		            }); 
+							}} ></img >
+							<img src='/images/uber2.png' className={'search__button'} onClick={() => {
+								getTrafficCall()
+		            .then((geo) => {
+		              this.props.setScreenData(4);
+		            }); 
+							}} ></img>
+						</div>
+					</div>
+				</div>
+			)
+	}
+
+	renderSecondScreen() {
+		let searchClass = classNames({
+	    'search__title': true,
+	  });
+		return (
+			<div>
+				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+				<div className='search__box'>
+					<div className='search__box-inner'>
+						<CarScreen/>
+					</div>
+				</div>
+			</div>
+		)
+	}
+
+	renderThirdScreen() {
+		let searchClass = classNames({
+	    'search__title': true,
+	  });
+		return (
+				<div>
+					<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+					<div className='search__box'>
+						<div className='search__box-inner'>
+							<BusScreen/>
+						</div>
+					</div>
+				</div>
+		)
+	}
+
+	renderFourthScreen() {
+		let searchClass = classNames({
+	    'search__title': true,
+	  });
+		return (
+					<div>
+						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<div className='search__box'>
+							<div className='search__box-inner'>
+								<CarScreen/>
+							</div>
+						</div>
+					</div>
+				)
+	}
+
+	renderFifthScreen() {
+		let searchClass = classNames({
+	    'search__title': true,
+	  });
+		return (
+					<div>
+						<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
+						<div className='search__box'>
+							<div className='search__box-inner'>
+								<CarScreen/>
+							</div>
+						</div>
+					</div>
+				)
+	}
+
   render () {
 	  let searchClass = classNames({
 	    'search__title': true,
 	  });
 
-    return (
-			<div>
-				<h1 className={searchClass}> Detroit Destination Safety Planner! </h1>
-				{this.renderTrafficData()}
-				<div className='search__box'>
-					<input placeholder='Src' type="text" />
-					<input placeholder='Destination' type="text" />
-					<button className={'search__button'} onClick={() => {
-						trafficCall()
-            .then((geo) => {
-              this.props.setScreenData(1);
-            }); 
-					}} > Find Traffic </button>
-					<button className={'search__button'} onClick={() => {
-						trafficCall()
-            .then((geo) => {
-              this.props.setScreenData(2);
-            }); 
-					}} > Bus Traffic </button>
-					<button className={'search__button'} onClick={() => {
-						trafficCall()
-            .then((geo) => {
-              this.props.setScreenData(3);
-            }); 
-					}} > Bike Traffic </button>
-					<button className={'search__button'} onClick={() => {
-						trafficCall()
-            .then((geo) => {
-              this.props.setScreenData(4);
-            }); 
-					}} > Uber App </button>
-				</div>
-			</div>
-		)
+	  console.log("SCREEN DATA " + this.props.locationReducer + " " + this.props.screenReducer);
+
+	  let screenTest = this.props.screenReducer;
+
+	  switch (screenTest) {
+		  case 0:
+		    return (
+					<div>
+						{ this.renderFirstScreen() }
+					</div>
+				)
+				break;
+			case 1:
+				return (
+					<div>
+						{ this.renderSecondScreen() }
+					</div>
+				)
+			case 2:
+				return (
+					<div>
+						{ this.renderThirdScreen() }
+					</div>
+				)
+			case 3:
+				return (
+					<div>
+						{ this.renderFourthScreen() }
+					</div>
+				)
+				break;
+			case 4:
+				return (
+					<div>
+						{ this.renderFifthScreen() }
+					</div>
+				)
+				break;
+			default:
+				return (
+					<div>
+						{ this.renderFirstScreen() }
+					</div>
+				)
+				break;
+		}
   }
 }
 
-App.propTypes = 
-{
+App.propTypes = {
     ScreenNumber: React.PropTypes.number,
 
     // Actions

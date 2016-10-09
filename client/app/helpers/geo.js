@@ -1,21 +1,3 @@
-var getCoordinatesAsync = function(options){
-	if(!options) options = {};
-	return new Promise(function(resolve, reject){
-		navigator.geolocation.getCurrentPosition(resolve, reject, options);
-	});
-}
-
-function postUserLocation([geo, src, destination]){
-	return fetch('/api/trafficData', {
-  	method: 'POST',
-  	body: {
-    	src: 'Hubot',
-    	destination: 'hubot',
-    	location: '',
-  	}
-	});
-}
-
 // var Promise = require('bluebird');
 // Promise.all([
 // 	resolveUserStringToRealLocation(fdsa),
@@ -24,14 +6,48 @@ function postUserLocation([geo, src, destination]){
 
 // })
 
-export function trafficCall(src, destination) {
+var getCoordinatesAsync = function(options){
+	if(!options) options = {};
+	return new Promise(function(resolve, reject){
+		navigator.geolocation.getCurrentPosition(resolve, reject, options);
+	});
+}
+
+function getUserTrafficData(){
+	return fetch('/api/trafficData', {
+  	method: 'GET'
+	});
+}
+
+
+export function getTrafficCall() {
+	var myGeo;
+	return getUserTrafficData()
+	.then(function(){
+		console.log("GET CALL ARGUMENTS " + arguments);
+		return arguments;
+	});
+}
+
+function postUserTrafficData([geo, src, destination]){
+	return fetch('/api/nextBus', {
+  	method: 'POST',
+  	body: {
+    	src: '',
+    	destination: 'hubot',
+    	location: '',
+  	}
+	});
+}
+
+export function busCall(src, destination) {
 	var myGeo;
 	return getCoordinatesAsync()
 	.then(function(geo){
 		myGeo = geo;
 		return [geo, src, destination]
 	})
-	.then(postUserLocation)
+	.then(postUserTrafficData)
 	.then(function(){
 		return myGeo;
 	});

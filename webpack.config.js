@@ -13,6 +13,7 @@ var config = {
   module : {
     loaders : [
       { test : /\.jsx?/, include : APP_DIR, loader : 'babel' },
+      { test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' },
       { test: /\.css$/, include : APP_DIR, loader: "style-loader!css-loader!postcss-loader" },
     ]
   },

@@ -44,27 +44,38 @@ input[type=text]:focus {
 	border: 5px solid #22DD7C;
 }
 
-.search__button {
-	font-family: Raleway, Helvetica;
-	color: #FFFFFF;
-	background-color: #22DD7C;
-	border: 1px solid #22DD7C;
-	border-radius: 5px;
-	box-shadow: 0px 5px 0px #00893F;
-	position: relative;
-	top: 0px;
-	transition: all ease 0.2s;
-	margin-left: 425px;
-	padding: 11px;
+.search__box-inner {
+
+}
+
+.search__box-inner > img {
+width:40%;
+}
+.search__box-inner > img > img {
+width:40%;
+}
+
+.search__box-inner > img > img > img{
+`width:40%;
+}
+
+.search__box-inner > img > img > img{
+	color:#000;
+	width:40%;
 }
 
 .search__button:hover {
-	background-color: #55d9ff;
+	opacity: .5;
 }
 
 .search__button:active {
   box-shadow: 0 3px 0 #00823F;
   top: 3px;
+}
+
+.search__button {
+  min-height: 100%;
+  margin: 20px;
 }
 
 .search__result{
