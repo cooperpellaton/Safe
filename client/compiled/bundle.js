@@ -24980,12 +24980,12 @@
 	            _react2.default.createElement(
 	              'h4',
 	              null,
-	              this.props.carData.danger
+	              "Detroit Many Plans"
 	            ),
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              'Closed in Sanilac on MI-25 WB between Gardner Line Rd and Burns Line Rd, stopped traffic back to Gardner Line Rd'
+	              'Closed in Sanilac on I80 Stop Between I215 Leave Beller Way'
 	            )
 	          ),
 	          _react2.default.createElement(
