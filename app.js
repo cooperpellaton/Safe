@@ -279,7 +279,7 @@ var extractInfo = function(data) {
 var makeUrl = function(params) {
     return `http://api.cctraffic.net/feeds/map/Traffic.aspx?${querystring.stringify(params)}`;
 };
-app.get("/api/trafficData", function(req, res) {
+app.post("/api/trafficData", function(req, res) {
     var traffic = Promise.props({
         id: 17,
         type: "incident",
