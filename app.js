@@ -136,7 +136,13 @@ app.post("/api/doSomeML", function(req, res) {
                 console.log('exec error: ' + error);
             }
         });
-        res.send('risk.dat' + 'danger.dat');
+        var content1 = fs.readFileSync('risk.dat', 'utf8');
+        var content2 = fs.readFileSync('danger.dat', 'utf8');
+        console.log("Content of Risk: " + content1);
+        console.log("Content of Danger: " + content2);
+        var jsonResp = {"risk": content1, "danger": content2};
+        res.setHeader('content-type', 'text/javascript');
+        res.send(JSON.stringify(jsonResp));
     })
     /**
      * This function takes in as a POST the stop that the user is electing to go 
@@ -227,7 +233,7 @@ app.get("/api/getRate", function(req, res) {
     // var average = (total/count);
     // res.send({"average" : average});
 });
-app.get("/api/putComment", function(req, res) {
+app.post("/api/putComment", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
     var comment = req.body["comment"];
@@ -256,10 +262,14 @@ var extractInfo = function(data) {
             description: data.traffic.CCTraffic.location[0].description,
             visibility: visibility,
             f: "waitML"
-
         };
     } else {
-        return "no incidents";
+        return {
+            title: null,
+            description: null,
+            visibility: visibility,
+            f: "waitML"
+        };
     }
 };
 var makeUrl = function(params) {
