@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 var Promise = require('bluebird');
+var rp = require('request-promise');
 var request = require('request');
 var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
@@ -186,21 +187,16 @@ app.post("/api/nextBus", function(req, res) {
     }
     return false;
 });
-app.get("/api/trafficData", function(req, res) {
-    var requestURL = "http://api.cctraffic.net/feeds/map/Traffic.aspx?id=17&type=incident&max=25&bLat=42.203097639603264%2C42.459441175790076&bLng=-83.25866010742186%2C-82.83293989257811&sort=severity_priority%20asc";
-    var xml = request(requestURL);
-    console.log("XML: " + xml.body);
-    var jsonTrafficData;
-    parseString(xml, function(err, result) {
-        jsonTrafficData = JSON.stringify(result);
-    });
-    var returnResponse = [];
-    returnResponse.push(jsonTrafficData["location"]);
-    returnResponse.push(jsonTrafficData["title"]);
-    returnResponse.push(jsonTrafficData["description"]);
-    console.log(returnResponse);
-    res.send(returnResponse);
+
+/**
+* This route will order an uber for the user. It assumes that the location is 
+* posted to the route in the format {[LAT, LONG],[LAT, LONG]}.
+*/
+app.post("/api/orderUber", function(req, res){
+    var uberURLCall = "uber://?client_id=cCpG5qtrxGxCzApGenztSMTYhqE_yirV&action=setPickup&pickup[latitude]=" + req.body[1]["lat"]+ "&pickup[longitude]=" + req.body[1]["long"] + "&dropoff[latitude]=" + req.body[2]["lat"] + "&dropoff[longitude]=" + req.body[2]["long"];
+    res.send(request.get(uberURLCall));
 });
+
 app.post("/api/putRate", function(req, res) {
     var lng = req.body["lng"];
     var lat = req.body["lat"];
@@ -275,7 +271,8 @@ app.get("/api/trafficData", function(req, res) {
             bLat: "42.203097639603264,42.459441175790076",
             bLng: "-83.25866010742186,-82.83293989257811",
             sort: "severity_priority asc"
-        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send);
+        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send.bind(res));
+
     })
     /**
      * Error Handler.

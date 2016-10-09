@@ -87,7 +87,7 @@ h4, h3, p{
   margin-bottom: 20px;
 }
 
-.map-header{
+#map{
   position:relative;
   top:0px;
   width:100%;
