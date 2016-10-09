@@ -23791,6 +23791,10 @@
 	
 	var _busComponent2 = _interopRequireDefault(_busComponent);
 	
+	var _watchComponent = __webpack_require__(/*! ../components/watch-component.jsx */ 378);
+	
+	var _watchComponent2 = _interopRequireDefault(_watchComponent);
+	
 	var _geo = __webpack_require__(/*! ../helpers/geo */ 207);
 	
 	var _geo2 = _interopRequireDefault(_geo);
@@ -23926,14 +23930,23 @@
 								} }),
 							_react2.default.createElement('img', { src: '/images/position.png', className: 'search__button', onClick: function onClick() {
 									(0, _geo.getTestTrafficCall)().then(function (geo) {
-										_this2.props.setScreenData(3);
+										_this2.props.setScreenData(2);
 									});
 								} }),
-							_react2.default.createElement('img', { src: '/images/uber2.png', className: 'search__button', onClick: function onClick() {
-									(0, _geo.getTestTrafficCall)().then(function (geo) {
-										_this2.props.setScreenData(4);
-									});
-								} })
+							_react2.default.createElement('img', { src: '/images/uber2.png', className: 'search__button' }),
+							_react2.default.createElement(
+								'button',
+								{ src: '/images/uber2.png', className: 'watch__button', onClick: function onClick() {
+										(0, _geo.getTestTrafficCall)().then(function (geo) {
+											_this2.props.setScreenData(5);
+										}).catch(function (error) {
+											console.log('RESPONSE in here with an error', error);
+											_this2.props.setScreenData(5);
+											return error;
+										});
+									} },
+								'Watch Mode'
+							)
 						)
 					)
 				);
@@ -24056,6 +24069,8 @@
 		}, {
 			key: 'renderFifthScreen',
 			value: function renderFifthScreen() {
+				var _this6 = this;
+	
 				var searchClass = (0, _classnames2.default)({
 					'search__title': true
 				});
@@ -24073,7 +24088,17 @@
 						_react2.default.createElement(
 							'div',
 							{ className: 'search__box-inner' },
-							_react2.default.createElement(_carComponent2.default, null)
+							_react2.default.createElement(_watchComponent2.default, null)
+						),
+						_react2.default.createElement(
+							'button',
+							{
+								className: 'watch__button',
+								onClick: function onClick() {
+									_this6.props.setScreenData(0);
+								}
+							},
+							'Stop Watching'
 						)
 					)
 				);
@@ -24123,11 +24148,18 @@
 							this.renderFifthScreen()
 						);
 						break;
+					case 5:
+						return _react2.default.createElement(
+							'div',
+							null,
+							this.renderFifthScreen()
+						);
+						break;
 					default:
 						return _react2.default.createElement(
 							'div',
 							null,
-							this.renderFirstScreen()
+							this.renderFifthScreen()
 						);
 						break;
 				}
@@ -24928,7 +24960,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'map-header' },
-	          _react2.default.createElement('img', { src: '/client/app/images/maps-att.png', style: carStyle1 })
+	          _react2.default.createElement('img', { src: '/client/app/images/map.jpeg', style: carStyle1 })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -25115,7 +25147,7 @@
 	      };
 	
 	      var dangerStyle = {
-	        width: Math.floor(Math.random() * 65) + 35 + "%"
+	        width: Math.floor(Math.random() * 65) + 1 + "%"
 	      };
 	
 	      return _react2.default.createElement(
@@ -31257,7 +31289,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".search__title {\n\tfont-family: Raleway, Helvetica;\n\tfont-size: 24px;\n\tfont-style: normal;\n\tfont-variant: normal;\n\tfont-weight: 500;\n\tline-height: 26.4px;\n\ttext-align: center;\n\twidth: 100%;\n\tbackground-color: #e55947;\n\tpadding: 10px;\n\tcolor: #fff;\n}\n\ninput[type=text] {\n   box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border: 1px solid #C2C2C2;\n    box-shadow: 1px 1px 4px #EBEBEB;\n    -moz-box-shadow: 1px 1px 4px #EBEBEB;\n    -webkit-box-shadow: 1px 1px 4px #EBEBEB;\n    border-radius: 3px;\n    -webkit-border-radius: 3px;\n    -moz-border-radus: 3px;\n    padding: 10px;\n    outline: none;\n    display: flex;\n    margin: 10px;\n}\n\n\ninput[type=text]:focus {\n\tborder: 1px solid #0C0;\n}\n\n.search__box {\n\tbackground-color: #fff;\n\tmargin-left: auto;\n\tmargin-right: auto;\n\twidth: 500px;\n\tfont-family: Helvetica;\n\tpadding: 10px;\n\tborder: 5px solid #22DD7C;\n}\n\n.search__box-inner {\n\n}\n\n.search__box-inner > img {\nwidth:40%;\n}\n.search__box-inner > img > img {\nwidth:40%;\n}\n\n.search__box-inner > img > img > img{\n`width:40%;\n}\n\n.search__box-inner > img > img > img{\n\tcolor:#000;\n\twidth:40%;\n}\n\n.search__button:hover {\n\topacity: .5;\n}\n\n.search__button:active {\n  box-shadow: 0 3px 0 #00823F;\n  top: 3px;\n}\n\n.search__button {\n  min-height: 100%;\n  margin: 20px;\n}\n\n.search__result{\n\tpadding: 10px;\n}\n\n.progressbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.progressbar > div {\n   background-color: #467899;\n   height: 20px;\n   border-radius: 10px;\n}\n\n\n.dangerbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.dangerbar > div {\n   background-color: #d13a3a;\n   height: 20px;\n   border-radius: 10px;\n}", ""]);
+	exports.push([module.id, ".search__title {\n\tfont-family: Raleway, Helvetica;\n\tfont-size: 24px;\n\tfont-style: normal;\n\tfont-variant: normal;\n\tfont-weight: 500;\n\tline-height: 26.4px;\n\ttext-align: center;\n\twidth: 100%;\n\tbackground-color: #e55947;\n\tpadding: 10px;\n\tcolor: #fff;\n}\n\ninput[type=text] {\n   box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border: 1px solid #C2C2C2;\n    box-shadow: 1px 1px 4px #EBEBEB;\n    -moz-box-shadow: 1px 1px 4px #EBEBEB;\n    -webkit-box-shadow: 1px 1px 4px #EBEBEB;\n    border-radius: 3px;\n    -webkit-border-radius: 3px;\n    -moz-border-radus: 3px;\n    padding: 10px;\n    outline: none;\n    display: flex;\n    margin: 10px;\n}\n\n\ninput[type=text]:focus {\n\tborder: 1px solid #0C0;\n}\n\n.search__box {\n\tbackground-color: #fff;\n\tmargin-left: auto;\n\tmargin-right: auto;\n\twidth: 500px;\n\tfont-family: Helvetica;\n\tpadding: 10px;\n\tborder: 5px solid #22DD7C;\n}\n\n.search__box-inner {\n\n}\n\n.search__box-inner > img {\nwidth:40%;\n}\n.search__box-inner > img > img {\nwidth:40%;\n}\n\n.search__box-inner > img > img > img{\n`width:40%;\n}\n\n.search__box-inner > img > img > img{\n\tcolor:#000;\n\twidth:40%;\n}\n\n.search__button:hover {\n\topacity: .5;\n\n}\n\n.search__button:active {\n  box-shadow: 0 3px 0 #00823F;\n  top: 3px;\n}\n\n.search__button {\n  min-height: 100%;\n  margin: 20px;\n}\n\n.search__result{\n\tpadding: 10px;\n}\n\n.progressbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.progressbar > div {\n   background-color: #467899;\n   height: 20px;\n   border-radius: 10px;\n}\n\n.geo__tracker {\n\t\tfont-family: helvetica;\n\t\ttext-align: center;\n\t\twidth: 100px;\n\t\theight: 100px;\n    background: red;\n    position: relative;\n    -webkit-animation: mymove 5s infinite; /* Chrome, Safari, Opera */\n    animation: mymove 5s infinite;\n}\n\n/* Chrome, Safari, Opera */\n@-webkit-keyframes mymove {\n    from {\n    \topacity: 1;\n    }\n    to {\n    \topacity: 0;\n    }\n}\n\n@keyframes mymove {\n    from {\n    \topacity: 1;\n    }\n    to {\n    \topacity: 0;\n    }\n}\n\n.watch__button{\n\t  width: 100%;\n    height: 55px;\n    background: #467899;\n    outline: none;\n    border: none;\n    font-size: 14px;\n}\n\n.watch__button:hover{\n\t   background: #5698c9;\n}\n\n.dangerbar {\n  background-color: #dfdfdf;\n\tborder-radius: 13px;\n\tpadding: 3px;\n}\n\n.dangerbar > div {\n   background-color: #d13a3a;\n   height: 20px;\n   border-radius: 10px;\n}", ""]);
 	
 	// exports
 
@@ -32576,6 +32608,106 @@
 	  transformer: undefined
 	};
 	module.exports = exports['default'];
+
+/***/ },
+/* 378 */
+/*!***************************************************!*\
+  !*** ./client/app/components/watch-component.jsx ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(/*! classnames */ 200);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _searchResultComponent = __webpack_require__(/*! ./search-result-component.jsx */ 202);
+	
+	var _searchResultComponent2 = _interopRequireDefault(_searchResultComponent);
+	
+	var _testHelper = __webpack_require__(/*! ../helpers/testHelper */ 203);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var CarScreen = function (_React$Component) {
+	  _inherits(CarScreen, _React$Component);
+	
+	  function CarScreen(props) {
+	    _classCallCheck(this, CarScreen);
+	
+	    return _possibleConstructorReturn(this, (CarScreen.__proto__ || Object.getPrototypeOf(CarScreen)).call(this, props));
+	  }
+	
+	  _createClass(CarScreen, [{
+	    key: 'render',
+	    // Indicents Accidents
+	
+	    value: function render() {
+	      var carStyle1 = {
+	        width: '100%',
+	        height: '100%'
+	      };
+	
+	      var carStyle2 = {
+	        'marginBottom': '20px'
+	      };
+	
+	      var carStyle3 = {
+	        position: 'Relative',
+	        width: '90%',
+	        margin: 'auto',
+	        'marginBottom': '10px'
+	      };
+	
+	      var progressStyle = {
+	        width: Math.floor(Math.random() * 65) + 35 + "%"
+	      };
+	
+	      var dangerStyle = {
+	        width: Math.floor(Math.random() * 65) + 35 + "%"
+	      };
+	
+	      var carClass = (0, _classnames2.default)({
+	        'car__screen': true
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'geo__tracker' },
+	          'Tracker On...'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return CarScreen;
+	}(_react2.default.Component);
+	
+	;
+	
+	CarScreen.defaultProps = {};
+	
+	exports.default = CarScreen;
 
 /***/ }
 /******/ ]);

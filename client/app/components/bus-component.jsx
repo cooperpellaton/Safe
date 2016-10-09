@@ -61,7 +61,7 @@ class BusScreen extends React.Component {
     }
 
     const dangerStyle ={
-      width: (Math.floor(Math.random() * 65) + 35) + "%"
+      width: (Math.floor(Math.random() * 65) + 1) + "%"
     }
 
     return (
