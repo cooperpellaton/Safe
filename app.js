@@ -172,15 +172,19 @@ var getTime = function(data, original){
     var long = original.originalLat;
     var lat = original.originalLong;
     var stopNext;
-    for (stop in blob["data"]["references"]["stops"]) {
-        if(stop["lon"].equals(long) && stop["lat"].equals(lat)){
-            stopNext = stop["id"];
+    var stops = blob["data"]["references"]["stops"];
+    var i = 0;
+    while (i<stops.length) {
+        if(stops[i]["lon"].equals(long) && stops[i]["lat"].equals(lat)){
+            stopNext = stops[i]["id"];
         }
+        i++;
     }
-
-    for (bus in blob["data"]["list"]) {
-        if (bus["nextStop"].equals(stopID)) {
-            return stop["nextStopTimeOffset"];
+    var buses = blob["data"]["list"];
+    var i = 0;
+    while(i<buses.length) {
+        if (buses[i]["nextStop"].equals(stopNext)) {
+            return buses[i]["nextStopTimeOffset"];
         }
     }
 }
