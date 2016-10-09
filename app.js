@@ -271,7 +271,8 @@ app.get("/api/trafficData", function(req, res) {
             bLat: "42.203097639603264,42.459441175790076",
             bLng: "-83.25866010742186,-82.83293989257811",
             sort: "severity_priority asc"
-        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send);
+        }).then(makeUrl).then(rp).then(convertToXml).then(extractInfo).then(res.send.bind(res));
+
     })
     /**
      * Error Handler.
