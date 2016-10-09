@@ -172,7 +172,7 @@ var getTime = function(data, original){
     var lat = original.originalLong;
     var stopNext;
     var stops = blob["data"]["references"]["stops"];
-    for stop in stops {
+    for (stop in stops) {
         if(stop["lon"].equals(long) && stop["lat"].equals(lat)){
             stopNext = stop["id"];
         }
