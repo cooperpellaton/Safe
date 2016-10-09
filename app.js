@@ -224,7 +224,7 @@ app.post("/api/nextBus", function(req, res) {
     .then(rp)
     .then(JSON.parse)
     .then((params)=> {
-        return Promise.resolve(getTime(params, original))
+        getTime(params, original)
     }).catch(function(e){
         console.log(e);
     });
