@@ -2,9 +2,8 @@
  * Module dependencies.
  */
 const os = require('os');
-const fs = require('fs')
-const exec = require('child_process').exec,
-    child;
+const fs = require('fs');
+const exec = require('child_process').exec,child;
 var Promise = require('bluebird');
 var rp = require('request-promise');
 var request = require('request');
@@ -115,60 +114,7 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: 31557600000
 }));
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['email', 'user_location']
-}));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/login'
-}), (req, res) => {
-    res.redirect(req.session.returnTo || '/');
-});
-/**
- * Defining my primary routes here.
- */
-// app.post('/location/', function(req, res) {
-//     console.log(req.body); //should be JSON
-//     res.send(distSort(req.body));
-// });
-// var promise1 = new Promise(function(resolve, reject) {
-//     db.open(function(err, db1) {
-//         if (err) {
-//             reject(err);
-//         }
-//         var stops = [];
-//         db1.collection('stops').find().each(function(err, item) {
-//             console.log(item);
-//             if (item == null) {
-//                 resolve(stops);
-//             } else {
-//                 stops.push(item);
-//             }
-//         });
-//     });
-// });
-// var distSort = function calculateDistance(location) {
-//     var distanceList = [];
-//     promise1.then(function(stops) {
-//         console.log(contents);
-//         for (stop in contents) {
-//             var object = [stop[1], stop[2]];
-//             distanceList.push(stop[0], distance(object, location));
-//         }
-//         var sortedVals = function getSortedKeys(distanceList) {
-//             var keys = [];
-//             for (var key in obj) keys.push(key);
-//             return keys.sort(function(a, b) {
-//                 return obj[a] - obj[b]
-//             });
-//         }
-//         return sortedVals;
-//     }).catch(function(err) {
-//         console.log(err);
-//     });
-// };
+
 /*
  *
  */
@@ -202,19 +148,19 @@ app.post("/api/doSomeML", function(req, res) {
      * Conner", "stop_lat" : 42.397106, "stop_lon" :-82.989298 }
      */
 
-var checkBuses = function(data){
-        bus_element = data["routes"]["legs"]["steps"];
-        bus_found = false;
-        for(var i = 0; i < bus_element.length; i++){
-            e = bus_element[i];
-            if(e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS'){
-                bus_element = e;
-                return true;
+var checkBuses = function(data) {
+    bus_element = data["routes"]["legs"]["steps"];
+    bus_found = false;
+    for (var i = 0; i < bus_element.length; i++) {
+        e = bus_element[i];
+        if (e['travel_mode'] == 'TRANSIT' && e['line']['type'] == 'BUS') {
+            bus_element = e;
+            return true;
         }
     }
 }
 
-var getTime = function(data){
+var getTime = function(data) {
     /** Remaining time **/
     var requestURL = "https://ddot-beta.herokuapp.com/api/api/where/vehicles-for-agency/DDOT.json?key=LIVEMAP";
     var returnedJSON = request(requestURL, callback);
@@ -224,13 +170,13 @@ var getTime = function(data){
         if (bus["nextStop"].equals(stopID)) {
             return stop["nextStopTimeOffset"];
         }
-    }    
+    }
 }
 
 app.post("/api/nextBus", function(req, res) {
     /*
-    * req.body = [[lat, long], [lat, long]]
-    */
+     * req.body = [[lat, long], [lat, long]]
+     */
     var coordinates = Promise.props({
         origin: "" + req.body[0][0] + "," + req.body[0][1],
         destiniation: "" + req.body[1][0] + "," + req.body[1][1]
